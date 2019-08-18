@@ -21,6 +21,7 @@ define('game/entities/walls', [
             priority: 100,
             name: 'walls'
         });
+        walls.addTag('removeOnLevelExit');
 
         let transform = walls.addComponent(new Transform(settings.x, settings.y));
         let solidGrid = walls.addComponent(new SolidGrid({

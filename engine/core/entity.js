@@ -150,7 +150,7 @@ define('engine/core/entity', [
         };
 
         let hasTags = function (tags) {
-            return tags.reduce((a, b) => hasTag(a) && b, true);
+            return tags.reduce((a, b) => hasTag(b) && a, true);
         };
 
         let getTags = function () {
@@ -179,6 +179,7 @@ define('engine/core/entity', [
             update: update,
             draw: draw,
             drawDebug: drawDebug,
+            die : die,
 
             addComponent: addComponent,
             getComponent: getComponent,

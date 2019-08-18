@@ -29,6 +29,7 @@ define('game/components/hitbox', [
 
     Hitbox.prototype.drawDebug = function (data) {
         data.canvas.drawRect(this.debugColor, this.x, this.y, this.width, this.height, false, 1);
+        data.canvas.drawLine(this.debugColor, this.x, this.y, this.x + this.width, this.y + this.height, 1);
     };
 
     Object.defineProperties(Hitbox.prototype, {

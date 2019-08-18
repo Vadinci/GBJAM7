@@ -86,7 +86,6 @@ define('engine/engine', [
         //check if any entities need to be added
         for (ii = 0; ii < addList.length; ii++) {
             entities.push(addList[ii]);
-            addList[ii].isAdded = true;
             data.entity = addList[ii];
             addList[ii].start(data);
 
@@ -99,10 +98,9 @@ define('engine/engine', [
         for (ii = 0; ii < removeList.length; ii++) {
             data.entity = removeList[ii];
             removeList[ii].die(data);
-            removeList[ii].isAdded = false;
 
             updateOrder.splice(updateOrder.indexOf(removeList[ii]), 1);
-            drawOrder.splice(updateOrder.indexOf(removeList[ii]), 1);
+            drawOrder.splice(drawOrder.indexOf(removeList[ii]), 1);
             entities.splice(entities.indexOf(removeList[ii]), 1);
         }
         removeList = [];
@@ -174,14 +172,14 @@ define('engine/engine', [
     };
 
     let addEntity = function (entity) {
-        if (entity.parent || addList.indexOf(entity) !== -1) {
+        if (addList.indexOf(entity) !== -1) {
             return;
         }
         addList.push(entity);
     };
 
     let removeEntity = function (entity) {
-        if (!entity.parent || removeList.indexOf(entity) !== -1) {
+        if (removeList.indexOf(entity) !== -1) {
             return;
         }
         removeList.push(entity);

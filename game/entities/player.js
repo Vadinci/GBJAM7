@@ -1,4 +1,6 @@
 define('game/entities/player', [
+    'game/globals',
+
     'engine/core',
     'engine/core/entity',
     'engine/utils/keycodes',
@@ -6,11 +8,14 @@ define('game/entities/player', [
     'game/components/transform',
     'game/components/hitbox',
     'game/components/actor',
+    'game/components/collider',
 
     'game/modules/frame',
     'game/modules/animation',
     'game/components/sprite'
 ], function (
+    G,
+
     Core,
     Entity,
     KeyCodes,
@@ -18,6 +23,7 @@ define('game/entities/player', [
     Transform,
     Hitbox,
     Actor,
+    Collider,
 
     Frame,
     Animation,
@@ -44,11 +50,15 @@ define('game/entities/player', [
             priority: 100,
             name: 'player'
         });
+        player.addTag('removeOnLevelExit');
 
         let transform = player.addComponent(new Transform(settings.x, settings.y));
         let hitbox = player.addComponent(new Hitbox(-6, -12, 12, 12));
         hitbox.debugColor = '#0ad';
         let actor = player.addComponent(new Actor());
+
+        let collider = player.addComponent(new Collider());
+        collider.addTag(G.CollisionTags.PLAYER);
 
         let texture = Core.assets.getTexture('player');
         let frames = [];

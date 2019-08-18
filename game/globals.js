@@ -9,5 +9,11 @@ define('game/globals', [
 
     G.TILE_SIZE = 16;
 
+    G.CollisionTags = {
+    	PLAYER : 1 << 0,
+
+    	EXIT : 1 << 3,
+    };
+
     return G;
 });

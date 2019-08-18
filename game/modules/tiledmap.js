@@ -53,6 +53,8 @@ define('game/modules/tiledmap', [
             objData.type = obj.type;
             objData.x = obj.x;
             objData.y = obj.y;
+            objData.width = obj.width;
+            objData.height = obj.height;
             objData.col = Math.floor(obj.x / _mapData.tilewidth);
             //for whatever reason, tiled sets the origin of objects on the bottom of their sprite
             //this causes an obj snapped to ,for example, row 1 to have a y coordinate of 96

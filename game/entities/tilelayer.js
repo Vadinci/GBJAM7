@@ -38,6 +38,7 @@ define('game/entities/tilelayer', [
             priority: 100,
             name: 'tileLayer'
         });
+        tileLayer.addTag('removeOnLevelExit');
 
         tileLayer.addComponent(new Transform());
 

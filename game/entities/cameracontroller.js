@@ -19,6 +19,7 @@ define('game/entities/cameracontroller', [
             z: 0,
             name: 'cameraContoller'
         });
+        cameraController.addTag('removeOnLevelExit');
 
         cameraController.addComponent({
             name: 'eventRegistration',

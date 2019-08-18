@@ -6,6 +6,7 @@ require([
     'engine/core/entity',
 
     'game/managers/camera',
+    'game/managers/collision',
     'game/managers/navigation'
 ], function (
     Core,
@@ -15,6 +16,7 @@ require([
     Entity,
 
     Camera,
+    CollisionManager,
     Navigation
 ) {
     "use strict";
@@ -39,9 +41,10 @@ require([
             GameCanvas.setPalette(Core.random.pick(palettes));
         });
 
+        CollisionManager.enable();
         Camera.enable();
 
-        Navigation.warpTo('test', 'default');
+        Navigation.warpTo('test2', 'default');
 
         canvas.getCanvasElement().style.width = '320px';
         canvas.getCanvasElement().style.height = '288px';

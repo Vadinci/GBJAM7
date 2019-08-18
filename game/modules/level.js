@@ -9,6 +9,7 @@ define('game/modules/level', [
     'game/entities/walls',
     'game/entities/player',
     'game/entities/cameracontroller',
+    'game/entities/exit',
 
     'game/managers/camera'
 ], function (
@@ -22,6 +23,7 @@ define('game/modules/level', [
     Walls,
     Player,
     CameraController,
+    Exit,
 
     Camera
 ) {
@@ -55,6 +57,29 @@ define('game/modules/level', [
                         y: data.y
                     };
                 }
+            }
+        };
+
+        let _createExits = function () {
+            let exitData = _map.getObjectLayer('exits');
+            for (let ii = 0; ii < exitData.length; ii++) {
+                let data = exitData[ii];
+
+                if (data.type !== 'exit') {
+                    console.warn('non exit object in the exit layer');
+                    continue;
+                }
+
+                let exit = new Exit({
+                    x: data.x,
+                    y: data.y,
+                    width: data.width,
+                    height: data.height,
+
+                    targetMap: data.properties.map,
+                    targetSpawnKey: data.properties.spawnPoint
+                });
+                Core.add(exit);
             }
         };
 
@@ -102,10 +127,12 @@ define('game/modules/level', [
             Core.add(new CameraController({
                 player: _player
             }));
+
+            _createExits();
         };
 
         let clear = function () {
-            let entities = Core.engine.getByTags('level');
+            let entities = Core.engine.getByTags('removeOnLevelExit');
             entities.forEach(e => Core.remove(e));
         };
 

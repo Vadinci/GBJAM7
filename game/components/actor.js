@@ -1,12 +1,10 @@
 define('game/components/actor', [
     'game/utils',
 
-    'engine/math/rectangle',
     'game/managers/world'
 ], function (
     Utils,
 
-    Rectangle,
     World
 ) {
     return function (settings) {
