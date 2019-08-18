@@ -30,6 +30,7 @@ define('game/components/sprite', [
         let setAnimation = function (key) {
             if (!_hasAnimation(key)) return;
 
+            if (_currentAnimation === _animations[key]) return;
             _currentAnimation = _animations[key];
             _currentAnimation.setFrame(0);
         };

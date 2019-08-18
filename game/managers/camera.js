@@ -24,6 +24,11 @@ define('game/managers/camera', [
     let _xx = 0;
     let _yy = 0;
 
+    let _shake = 0;
+
+    let _dx = 0;
+    let _dy = 0;
+
     let setBounds = function (left, top, right, bottom) {
         if (right - left < _width) throw "camera bounds too small!";
         if (bottom - top < _height) throw "camera bounds too small!";
@@ -48,6 +53,10 @@ define('game/managers/camera', [
         if (_yy + _height > _bounds.bottom) _yy = _bounds.bottom - _height;
     };
 
+    let shake = function (amount) {
+        _shake += amount;
+    };
+
     let cameraStarter = new Entity({
         z: -1,
         priority: 0,
@@ -55,8 +64,16 @@ define('game/managers/camera', [
     });
     cameraStarter.addComponent({
         name: 'starter',
+        update: function () {
+            if (_shake > 0) {
+                let amt = Math.round((_shake * _shake) / 25);
+                _dx = Core.random.int(-amt, amt);
+                _dy = Core.random.int(-amt, amt);
+                _shake--;
+            }
+        },
         preDraw: function (data) {
-            data.canvas.translate(-_xx, -_yy);
+            data.canvas.translate(-_xx - _dx, -_yy - _dy);
         }
     });
 
@@ -68,7 +85,7 @@ define('game/managers/camera', [
     cameraEnder.addComponent({
         name: 'ender',
         postDraw: function (data) {
-            data.canvas.translate(_xx, _yy);
+            data.canvas.translate(_xx + _dx, _yy + _dy);
         }
     });
 
@@ -84,7 +101,9 @@ define('game/managers/camera', [
 
         setBounds: setBounds,
         move: move,
-        moveTo : moveTo
+        moveTo: moveTo,
+
+        shake : shake
     };
 
     Object.defineProperties(manager, {

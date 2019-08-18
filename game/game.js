@@ -2,6 +2,8 @@ require([
     'engine/core',
 
     'game/gamecanvas',
+    'game/utils/recorder',
+
     'engine/utils/keycodes',
     'engine/core/entity',
 
@@ -12,6 +14,8 @@ require([
     Core,
 
     GameCanvas,
+    Recorder,
+
     KeyCodes,
     Entity,
 
@@ -35,14 +39,36 @@ require([
             ['#2f463e', '#385e49', '#567b47', "#7e8416"],
             ['#5b3920', '#6b8d42', '#7cc67b', "#ffffb5"]
         ];
-        GameCanvas.setPalette(palettes[0]);
+        let pIdx = 0;
+        GameCanvas.setPalette(palettes[pIdx]);
 
         Core.input.on('keyDown-P', () => {
-            GameCanvas.setPalette(Core.random.pick(palettes));
+            pIdx = (pIdx + 1) % palettes.length;
+            GameCanvas.setPalette(palettes[pIdx]);
+        });
+
+        Core.input.on('keyDown-S', () => {
+            Camera.shake(10);
+        });
+         Core.input.on('keyDown-D', () => {
+            Camera.shake(5);
         });
 
         CollisionManager.enable();
         Camera.enable();
+
+        {
+            let isRecording = false;
+            Core.input.on('keyDown-R', () => {
+                if (!isRecording) {
+                    Recorder.start(GameCanvas.getCanvas());
+                } else {
+                    Recorder.stop();
+                    setTimeout(Recorder.save, 500);
+                }
+                isRecording = !isRecording;
+            });
+        }
 
         Navigation.warpTo('test', 'default');
 

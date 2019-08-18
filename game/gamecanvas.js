@@ -124,7 +124,7 @@ define('game/gamecanvas', [
         // Create a buffer for the position of the rectangle corners.
         dimensionBuffer = gl.createBuffer();
 
-       gl.bindBuffer(gl.ARRAY_BUFFER, dimensionBuffer);
+        gl.bindBuffer(gl.ARRAY_BUFFER, dimensionBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
             0.0, 0.0,
             canvas.width, 0.0,
@@ -207,7 +207,11 @@ define('game/gamecanvas', [
     let module = {
         init: init,
         setPalette: setPalette,
-        render: render
+        render: render,
+
+        getCanvas: function () {
+            return canvas;
+        }
     };
     return module;
 });

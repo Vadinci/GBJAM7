@@ -10,7 +10,7 @@ define('game/entities/player', [
     'game/components/actor',
     'game/components/collider',
 
-    'game/modules/frame',
+    'game/modules/framestrip',
     'game/modules/animation',
     'game/components/sprite'
 ], function (
@@ -25,7 +25,7 @@ define('game/entities/player', [
     Actor,
     Collider,
 
-    Frame,
+    FrameStrip,
     Animation,
     Sprite
 ) {
@@ -61,13 +61,20 @@ define('game/entities/player', [
         collider.addTag(G.CollisionTags.PLAYER);
 
         let texture = Core.assets.getTexture('player');
-        let frames = [];
-        frames.push(new Frame(texture, 0 * 64, 0, 64, 32, 32, 32));
-        frames.push(new Frame(texture, 1 * 64, 0, 64, 32, 32, 32));
-        let animIdle = new Animation([frames[0], frames[1]], 12, true);
+        let strip = new FrameStrip(texture, 0, 0, 64, 32, 8, 1, 32, 32);
+
+        let animIdle = new Animation(strip.getFrames([0, 0, 0, 0, 0, 0, 0, 1]), 8, true);
+        let animWalk = new Animation(strip.getFrames([2, 3]), 12, true);
+        let animJump = new Animation(strip.getFrames([4, 5]), 12, true);
+        let animCharge = new Animation(strip.getFrames(6), 0, false);
+        let animStab = new Animation(strip.getFrames([7, 6]), 8, false);
 
         let sprite = new Sprite();
         sprite.addAnimation('idle', animIdle);
+        sprite.addAnimation('walk', animWalk);
+        sprite.addAnimation('jump', animJump);
+        sprite.addAnimation('charge', animCharge);
+        sprite.addAnimation('stab', animStab);
         sprite.setAnimation('idle');
 
         player.addComponent(sprite);
@@ -114,6 +121,11 @@ define('game/entities/player', [
         let _jumpBufferTimer = 0;
         let _coyoteTimer = 0;
 
+        let _isStabbing = false;
+        let _isCharging = false;
+
+        animStab.on('finish', () => _isStabbing = false);
+
         let controller = {
             name: 'controller',
             update: function (data) {
@@ -126,7 +138,7 @@ define('game/entities/player', [
                     _coyoteTimer = COYOTE_FRAMES;
                 }
 
-                if (Core.input.keyPressed(KeyCodes.Z)) {
+                if (Core.input.keyPressed(KeyCodes.Z) && !_isStabbing && !_isCharging) {
                     _jumpBufferTimer = BUFFER_FRAMES;
                 }
 
@@ -135,13 +147,43 @@ define('game/entities/player', [
                     _jumpBufferTimer = 0;
                 }
 
+
+                if (Core.input.keyPressed(KeyCodes.X) && isFloored() && !_isStabbing) {
+                    _isCharging = true;
+                }
+
+                if (Core.input.keyReleased(KeyCodes.X) && _isCharging) {
+                    _isStabbing = true;
+                    _isCharging = false;
+                }
+
                 _jumpBufferTimer--;
                 _coyoteTimer--;
+
+                if (_isCharging) {
+                    tvx *= 0.1;
+                }
+
+                if (_isStabbing) {
+                    tvx = 0;
+                }
 
                 _velocity.x = step(_velocity.x, tvx, 0.4);
 
                 if (_velocity.x > 0.1) transform.scale.x = 1;
                 if (_velocity.x < -0.1) transform.scale.x = -1;
+
+                if (_isCharging) {
+                    sprite.setAnimation('charge');
+                } else if (_isStabbing) {
+                    sprite.setAnimation('stab');
+                } else if (!isFloored()) {
+                    sprite.setAnimation('jump');
+                } else if (Math.abs(_velocity.x) > 0.1) {
+                    sprite.setAnimation('walk');
+                } else {
+                    sprite.setAnimation('idle')
+                };
             }
         };
         player.addComponent(controller);
