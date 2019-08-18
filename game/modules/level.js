@@ -7,6 +7,7 @@ define('game/modules/level', [
 
     'game/entities/tilelayer',
     'game/entities/walls',
+    'game/entities/onewayplatform',
     'game/entities/player',
     'game/entities/cameracontroller',
     'game/entities/exit',
@@ -21,6 +22,7 @@ define('game/modules/level', [
 
     TileLayer,
     Walls,
+    OneWayPlatform,
     Player,
     CameraController,
     Exit,
@@ -77,9 +79,37 @@ define('game/modules/level', [
                     height: data.height,
 
                     targetMap: data.properties.map,
-                    targetSpawnKey: data.properties.spawnPoint
+                    targetSpawnKey: data.properties.spawnPoint,
+                    manual: data.properties.manual || false
                 });
                 Core.add(exit);
+            }
+        };
+
+        let _createLevelGeometry = function () {
+            let walls = new Walls({
+                width: _map.width,
+                height: _map.height,
+            });
+            let wallGrid = walls.getComponent('solidGrid');
+            Core.add(walls);
+
+            let collisionLayer = _map.getTileLayer('collision');
+            for (let ix = 0; ix < _map.width; ix++) {
+                for (let iy = 0; iy < _map.height; iy++) {
+                    if (!collisionLayer[ix][iy]) continue;
+                    switch (collisionLayer[ix][iy].idInSet) {
+                        case 0:
+                            wallGrid.setSolid(ix, iy, true);
+                            break;
+                        case 1:
+                            Core.add(new OneWayPlatform({
+                                x: ix * G.TILE_SIZE,
+                                y: iy * G.TILE_SIZE
+                            }));
+                            break;
+                    }
+                }
             }
         };
 
@@ -110,19 +140,22 @@ define('game/modules/level', [
 
             Camera.setBounds(0, 0, _map.width * G.TILE_SIZE, _map.height * G.TILE_SIZE);
 
-            Core.add(new Walls({
-                map: _map
-            }));
+            _createLevelGeometry();
 
             Core.add(new TileLayer({
                 map: _map
             }));
 
+            let spawnX = (getSpawn(spawnKey) || getSpawn('default')).x;
+            let spawnY = (getSpawn(spawnKey) || getSpawn('default')).y - 1;
+
             _player = new Player({
-                x: (getSpawn(spawnKey) || getSpawn('default')).x,
-                y: (getSpawn(spawnKey) || getSpawn('default')).y - 1,
+                x: spawnX,
+                y: spawnY,
             });
             Core.add(_player);
+
+            Camera.moveTo(spawnX, spawnY);
 
             Core.add(new CameraController({
                 player: _player

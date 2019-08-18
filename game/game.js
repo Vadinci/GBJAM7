@@ -44,7 +44,7 @@ require([
         CollisionManager.enable();
         Camera.enable();
 
-        Navigation.warpTo('test2', 'default');
+        Navigation.warpTo('test', 'default');
 
         canvas.getCanvasElement().style.width = '320px';
         canvas.getCanvasElement().style.height = '288px';
@@ -64,6 +64,7 @@ require([
         Core.assets.loadTexture('assets/tiles.png', 'tiles');
         Core.assets.loadJson('assets/levels/test.json', 'levels/test');
         Core.assets.loadJson('assets/levels/test2.json', 'levels/test2');
+        Core.assets.loadJson('assets/levels/test3.json', 'levels/test3');
         Core.assets.on('loadingComplete', function () {
             addFilteredCanvas();
         }, { once: true });

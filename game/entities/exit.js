@@ -33,6 +33,8 @@ define('game/entities/exit', [
             _targetSpawnKey = 'default';
         }
 
+        let _manual = settings.manual;
+
         let exit = new Entity({
             z: 1,
             priority: 100,
@@ -43,6 +45,8 @@ define('game/entities/exit', [
         let transform = exit.addComponent(new Transform(settings.x, settings.y));
         let hitbox = exit.addComponent(new Hitbox(0, 0, settings.width, settings.height));
         let collider = exit.addComponent(new Collider());
+
+        hitbox.debugColor = '#f82';
 
         collider.addTag(G.CollisionTags.EXIT);
         collider.addCheck(G.CollisionTags.PLAYER);

@@ -35,8 +35,12 @@ define('game/managers/camera', [
     };
 
     let move = function (dx, dy) {
-        _xx += dx;
-        _yy += dy;
+        moveTo(_xx + dx, _yy + dy);
+    };
+
+    let moveTo = function (x, y) {
+        _xx = x;
+        _yy = y;
 
         if (_xx < _bounds.left) _xx = _bounds.left;
         if (_yy < _bounds.top) _yy = _bounds.top;
@@ -79,7 +83,8 @@ define('game/managers/camera', [
         },
 
         setBounds: setBounds,
-        move: move
+        move: move,
+        moveTo : moveTo
     };
 
     Object.defineProperties(manager, {

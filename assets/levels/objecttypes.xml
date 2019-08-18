@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objecttypes>
- <objecttype name="exit" color="#e1004a">
+ <objecttype name="exit" color="#da7800">
   <property name="manual" type="bool" default="false"/>
   <property name="map" type="string"/>
   <property name="spawnPoint" type="string" default="default"/>

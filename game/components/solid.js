@@ -141,7 +141,7 @@ define('game/components/solid', [
             overlapsActor: overlapsActor,
             move: move,
 
-            start: function () {
+            start: function (data) {
                 _entity = data.entity;
 
                 _transform = _entity.getComponent('transform');
@@ -152,7 +152,7 @@ define('game/components/solid', [
 
                 World.addSolid(self);
             },
-            die: function () {
+            die: function (data) {
                 World.removeSolid(self);
             }
         };

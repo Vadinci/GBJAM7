@@ -131,7 +131,7 @@ define('game/entities/player', [
                 }
 
                 if (_jumpBufferTimer > 0 && canJump()) {
-                    _velocity.y = -3;
+                    _velocity.y = -3.15;
                     _jumpBufferTimer = 0;
                 }
 
