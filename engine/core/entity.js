@@ -9,6 +9,8 @@ define('engine/core/entity', [
 
         let _dispatcher = new Dispatcher();
 
+        let _tags = [];
+
         //TODO tags
 
         //all functions
@@ -61,7 +63,7 @@ define('engine/core/entity', [
             }
         };
 
-         let drawDebug = function (data) {
+        let drawDebug = function (data) {
             for (let ii = 0; ii < _componentCalls.preDraw.length; ii++) {
                 let comp = _components[_componentCalls.preDraw[ii]];
                 comp.preDraw.call(comp, data);
@@ -130,6 +132,44 @@ define('engine/core/entity', [
             }
         };
 
+
+
+        let addTag = function (tag) {
+            let idx = _tags.indexOf(tag);
+            if (idx !== -1) return;
+
+            _tags.push(tag);
+        };
+
+        let addTags = function (tags) {
+            tags.forEach(t => addTag(t));
+        };
+
+        let hasTag = function (tag) {
+            return _tags.indexOf(tag) !== -1;
+        };
+
+        let hasTags = function (tags) {
+            return tags.reduce((a, b) => hasTag(a) && b, true);
+        };
+
+        let getTags = function () {
+            return [].concat(_tags);
+        };
+
+        let removeTag = function (tag) {
+            let idx = _tags.indexOf(tag);
+            if (idx === -1) return;
+
+            _tags.splice(idx, 1);
+        };
+
+        let removeTags = function (tags) {
+            tags.forEach(t => removeTag(t));
+        };
+
+
+
         let self = {
             name: settings.name || 'entity',
             z: settings.z || 0,
@@ -138,7 +178,7 @@ define('engine/core/entity', [
             start: start,
             update: update,
             draw: draw,
-            drawDebug : drawDebug,
+            drawDebug: drawDebug,
 
             addComponent: addComponent,
             getComponent: getComponent,
@@ -146,9 +186,17 @@ define('engine/core/entity', [
             getAllComponents: getAllComponents,
             removeComponent: removeComponent,
 
-            on : _dispatcher.on,
-            off : _dispatcher.off,
-            emit : _dispatcher.emit
+            addTag: addTag,
+            addTags: addTags,
+            hasTag: hasTag,
+            hasTags: hasTags,
+            getTags: getTags,
+            removeTag: removeTag,
+            removeTags: removeTags,
+
+            on: _dispatcher.on,
+            off: _dispatcher.off,
+            emit: _dispatcher.emit
         };
         return self;
     };

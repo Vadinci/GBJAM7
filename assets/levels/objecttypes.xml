@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objecttypes>
+ <objecttype name="exit" color="#e1004a">
+  <property name="manual" type="bool" default="false"/>
+  <property name="map" type="string"/>
+  <property name="spawnPoint" type="string" default="default"/>
+ </objecttype>
+ <objecttype name="spawn" color="#1dbdf0">
+  <property name="key" type="string" default="default"/>
+ </objecttype>
+</objecttypes>

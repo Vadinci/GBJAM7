@@ -25,15 +25,23 @@
         }, 
         {
          "draworder":"topdown",
-         "name":"objects",
+         "name":"spawns",
          "objects":[
                 {
                  "height":0,
                  "id":1,
                  "name":"spawn:doorLeft",
                  "point":true,
+                 "properties":
+                    {
+                     "key":"doorLeft"
+                    },
+                 "propertytypes":
+                    {
+                     "key":"string"
+                    },
                  "rotation":0,
-                 "type":"",
+                 "type":"spawn",
                  "visible":true,
                  "width":0,
                  "x":24,
@@ -44,8 +52,39 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "name":"exits",
+         "objects":[
+                {
+                 "height":32,
+                 "id":4,
+                 "name":"exit:test",
+                 "properties":
+                    {
+                     "map":"test",
+                     "spawnPoint":"doorRight"
+                    },
+                 "propertytypes":
+                    {
+                     "map":"string",
+                     "spawnPoint":"string"
+                    },
+                 "rotation":0,
+                 "type":"exit",
+                 "visible":true,
+                 "width":16,
+                 "x":16,
+                 "y":32
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":2,
+ "nextobjectid":5,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.1.4",

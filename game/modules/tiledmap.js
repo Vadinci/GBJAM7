@@ -46,10 +46,11 @@ define('game/modules/tiledmap', [
         };
 
         let _parseObject = function (obj) {
-            let objData = _parseTile(obj.gid);
+            let objData = {};
 
             objData.name = obj.name || "object";
 
+            objData.type = obj.type;
             objData.x = obj.x;
             objData.y = obj.y;
             objData.col = Math.floor(obj.x / _mapData.tilewidth);
@@ -58,21 +59,6 @@ define('game/modules/tiledmap', [
             objData.row = Math.floor((obj.y - 0.01) / _mapData.tileheight);
 
             objData.properties = obj.properties || {};
-
-            if (Utils.isArray(obj.properties)) {
-                // Tiled version >= 1.2
-                let properties = {};
-                for (let prop of obj.properties) {
-                    properties[prop.name] = prop.value;
-                }
-                objData.properties = properties;
-
-            } else if (Utils.isObject(obj.properties)) {
-                // Tiled version <= 1.1
-                objData.properties = obj.properties;
-            } else {
-                objData.properties = {};
-            }
 
             return objData;
         };

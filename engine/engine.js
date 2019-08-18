@@ -131,7 +131,7 @@ define('engine/engine', [
 
         canvas.save();
 
-       // debugger;
+        // debugger;
         dispatcher.emit('preDraw', data);
 
         for (ii = 0; ii < drawOrder.length; ii++) {
@@ -140,7 +140,7 @@ define('engine/engine', [
         }
 
         dispatcher.emit('postDraw', data);
-       // debugger;
+        // debugger;
 
         canvas.restore();
     };
@@ -201,6 +201,24 @@ define('engine/engine', [
         });
     };
 
+    let getByName = function (name) {
+        let result = [];
+        for (let ii = 0; ii < entities.length; ii++) {
+            if (entities[ii].name === name) result.push(entities[ii]);
+        }
+        return result;
+    };
+
+    let getByTags = function (tags) {
+        tags = [].concat(tags); //force to array;
+
+        let result = [];
+        for (let ii = 0; ii < entities.length; ii++) {
+            if (entities[ii].hasTags(tags)) result.push(entities[ii]);
+        }
+        return result;
+    };
+
     let loop = function () {
         tick();
         Input.flush();
@@ -224,6 +242,9 @@ define('engine/engine', [
 
         add: addEntity,
         remove: removeEntity,
+
+        getByName: getByName,
+        getByTags: getByTags,
 
         setDebug: onOff => _drawDebug = onOff,
 

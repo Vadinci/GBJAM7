@@ -129,6 +129,9 @@ define('game/entities/player', [
                 _coyoteTimer--;
 
                 _velocity.x = step(_velocity.x, tvx, 0.4);
+
+                if (_velocity.x > 0.1) transform.scale.x = 1;
+                if (_velocity.x < -0.1) transform.scale.x = -1;
             }
         };
         player.addComponent(controller);

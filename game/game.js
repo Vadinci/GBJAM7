@@ -5,20 +5,8 @@ require([
     'engine/utils/keycodes',
     'engine/core/entity',
 
-    'game/modules/frame',
-    'game/modules/animation',
-    'game/modules/tiledmap',
-    'game/components/sprite',
-    'game/components/transform',
-    'game/components/actor',
-    'game/components/hitbox',
-
-    'game/entities/player',
-    'game/entities/walls',
-    'game/entities/tilelayer',
-    'game/entities/cameracontroller',
-
-    'game/managers/camera'
+    'game/managers/camera',
+    'game/managers/navigation'
 ], function (
     Core,
 
@@ -26,20 +14,8 @@ require([
     KeyCodes,
     Entity,
 
-    Frame,
-    Animation,
-    TiledMap,
-    Sprite,
-    Transform,
-    Actor,
-    Hitbox,
-
-    Player,
-    Walls,
-    TileLayer,
-    CameraController,
-
-    Camera
+    Camera,
+    Navigation
 ) {
     "use strict";
 
@@ -63,41 +39,9 @@ require([
             GameCanvas.setPalette(Core.random.pick(palettes));
         });
 
-
-        let player = new Player({ x: 30, y: 60 });
-        Core.add(player);
-
-        let map = new TiledMap('levels/test2');
-
-        let walls = new Walls({
-            map: map
-        });
-        Core.add(walls);
-
-        let tileLayer = new TileLayer({
-            map: map
-        });
-        Core.add(tileLayer);
-
         Camera.enable();
 
-        Camera.setBounds(0, 0, 16 * map.width, 16 * map.height);
-
-        let controller = new Entity({});
-        controller.addComponent({
-            name: 'controller',
-            update: function () {
-                if (Core.input.keyDown(KeyCodes.A)) Camera.move(-1, 0);
-                if (Core.input.keyDown(KeyCodes.D)) Camera.move(1, 0);
-                if (Core.input.keyDown(KeyCodes.W)) Camera.move(0, -1);
-                if (Core.input.keyDown(KeyCodes.S)) Camera.move(0, 1);
-            }
-        });
-        Core.add(controller);
-
-        Core.add(new CameraController({
-            player: player
-        }));
+        Navigation.warpTo('test', 'default');
 
         canvas.getCanvasElement().style.width = '320px';
         canvas.getCanvasElement().style.height = '288px';
