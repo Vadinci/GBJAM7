@@ -155,7 +155,7 @@ define('game/modules/level', [
             });
             Core.add(_player);
 
-            Camera.moveTo(spawnX, spawnY);
+            Camera.moveTo(spawnX - 80, spawnY - 72);
 
             Core.add(new CameraController({
                 player: _player

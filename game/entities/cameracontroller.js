@@ -15,6 +15,8 @@ define('game/entities/cameracontroller', [
 
         let _playerTransform = _player.getComponent('transform');
 
+        let _offX = 0;
+
         let cameraController = new Entity({
             z: 0,
             name: 'cameraContoller'
@@ -25,22 +27,62 @@ define('game/entities/cameracontroller', [
             name: 'eventRegistration',
             start: function () {
                 Core.engine.on('postUpdate', _updateCamera);
+
+                _lastPlayerX = _playerTransform.position.x;
+                _lastPlayerY = _playerTransform.position.y;
             },
             die: function () {
                 Core.engine.off('postUpdate', _updateCamera);
             }
         });
 
+        //TODO math utils
+        let step = function (from, to, maxStep) {
+            if (Math.abs(from - to) < 0.0001) return to;
+            if (from > to) {
+                return Math.max(to, from - maxStep);
+            } else {
+                return Math.min(to, from + maxStep);
+            }
+        };
+
+        let _lastPlayerX;
+        let _lastPlayerY;
+
         let _updateCamera = function () {
             //just try and center player right now
 
-            let centerX = Camera.x + Camera.width / 2;
-            let centerY = Camera.y + Camera.height / 2;
+            let targetX = Camera.x + Camera.width / 2;
+            let targetY = Camera.y + Camera.height / 2;
 
-            let dx = _playerTransform.position.x - centerX;
-            let dy = _playerTransform.position.y - centerY;
+            targetX += _offX;
 
-            Camera.move(dx, dy);
+            let dx = _playerTransform.position.x - targetX;
+            let dy = _playerTransform.position.y - targetY;
+
+            let dPlayerX = _playerTransform.position.x - _lastPlayerX;
+
+            _lastPlayerX = _playerTransform.position.x;
+            _lastPlayerY = _playerTransform.position.y;
+
+            if (dPlayerX > 0) {
+                _offX = step(_offX, -30, 1.5);
+                if (_offX > 0) {
+                    _offX = step(_offX, -30, 0.7);
+                }
+            }
+            if (dPlayerX < 0) {
+                _offX = step(_offX, 30, 1.5);
+                if (_offX < 0) {
+                    _offX = step(_offX, 30, 0.7);
+                }
+            }
+
+            //TODO clamp util
+            let stepX = Math.min(Math.max(-4, dx), 4) | 0;
+            let stepY = Math.min(Math.max(-4, dy), 4) | 0;
+
+            Camera.move(stepX, stepY);
         };
 
         return cameraController;

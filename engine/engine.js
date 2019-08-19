@@ -51,6 +51,7 @@ define('engine/engine', [
 
         while (accumulatedTime >= mspf) {
             update(1);
+            Input.flush();
             accumulatedTime -= mspf;
         }
 
@@ -219,7 +220,6 @@ define('engine/engine', [
 
     let loop = function () {
         tick();
-        Input.flush();
         requestAnimFrame(loop);
     };
 
