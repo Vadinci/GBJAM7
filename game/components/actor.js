@@ -55,7 +55,7 @@ define('game/components/actor', [
                         direction: sign
                     };
                     onCollision && onCollision(colData);
-                    _entity.emit('collide-x', colData);
+                    _entity.emit('collisionX', colData);
                     break;
                 }
             }
@@ -82,7 +82,7 @@ define('game/components/actor', [
                         direction: sign
                     };
                     onCollision && onCollision(colData);
-                    _entity.emit('collide-y', colData);
+                    _entity.emit('collisionY', colData);
                     break;
                 }
             }

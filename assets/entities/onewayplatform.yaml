@@ -1,0 +1,14 @@
+name: oneWayPlatform
+
+priority : 0
+z : 0
+
+components:
+  transform: ~
+  hitbox:
+    x: 0
+    y: 0
+    width: 16
+    height: 4
+    debugColor: '#52a'
+  oneWaySolid: ~

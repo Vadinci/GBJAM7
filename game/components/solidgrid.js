@@ -104,7 +104,7 @@ define('game/components/solidgrid', [
                 for (let ic = 0; ic < _width; ic++) {
                     for (let ir = 0; ir < _height; ir++) {
                         if (!_cells[ic][ir]) continue;
-                        data.canvas.drawRect('#d00', ic * _cellWidth, ir * _cellHeight, _cellWidth, _cellHeight, false, 1);
+                        data.canvas.drawRect('#ddd', ic * _cellWidth, ir * _cellHeight, _cellWidth, _cellHeight, false, 1);
                     }
                 }
             }

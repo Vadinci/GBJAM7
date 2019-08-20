@@ -9,7 +9,9 @@ require([
 
     'game/managers/camera',
     'game/managers/collision',
-    'game/managers/navigation'
+    'game/managers/navigation',
+
+    'game/entities/enemies/bug'
 ], function (
     Core,
 
@@ -21,7 +23,9 @@ require([
 
     Camera,
     CollisionManager,
-    Navigation
+    Navigation,
+
+    Bug
 ) {
     "use strict";
 
@@ -50,7 +54,7 @@ require([
         Core.input.on('keyDown-S', () => {
             Camera.shake(10);
         });
-         Core.input.on('keyDown-D', () => {
+        Core.input.on('keyDown-D', () => {
             Camera.shake(5);
         });
 
@@ -75,6 +79,13 @@ require([
         canvas.getCanvasElement().style.width = '320px';
         canvas.getCanvasElement().style.height = '288px';
         document.body.append(canvas.getCanvasElement());
+
+        Core.add(new Bug({
+            x : 80,
+            y : 70
+        }));
+
+        console.log(Core.assets.getYaml('entities/onewayplatform'));
     };
 
     Core.init({
@@ -91,6 +102,7 @@ require([
         Core.assets.loadJson('assets/levels/test.json', 'levels/test');
         Core.assets.loadJson('assets/levels/test2.json', 'levels/test2');
         Core.assets.loadJson('assets/levels/test3.json', 'levels/test3');
+        Core.assets.loadYaml('assets/entities/onewayplatform.yaml', 'entities/onewayplatform');
         Core.assets.on('loadingComplete', function () {
             addFilteredCanvas();
         }, { once: true });

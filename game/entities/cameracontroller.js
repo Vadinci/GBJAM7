@@ -2,11 +2,13 @@ define('game/entities/cameracontroller', [
     'engine/core',
     'engine/core/entity',
 
+    'game/utils',
     'game/managers/camera'
 ], function (
     Core,
     Entity,
 
+    Utils,
     Camera
 ) {
     "use strict";
@@ -36,16 +38,6 @@ define('game/entities/cameracontroller', [
             }
         });
 
-        //TODO math utils
-        let step = function (from, to, maxStep) {
-            if (Math.abs(from - to) < 0.0001) return to;
-            if (from > to) {
-                return Math.max(to, from - maxStep);
-            } else {
-                return Math.min(to, from + maxStep);
-            }
-        };
-
         let _lastPlayerX;
         let _lastPlayerY;
 
@@ -66,15 +58,15 @@ define('game/entities/cameracontroller', [
             _lastPlayerY = _playerTransform.position.y;
 
             if (dPlayerX > 0) {
-                _offX = step(_offX, -30, 1.5);
+                _offX = Utils.step(_offX, -30, 1.5);
                 if (_offX > 0) {
-                    _offX = step(_offX, -30, 0.7);
+                    _offX = Utils.step(_offX, -30, 0.7);
                 }
             }
             if (dPlayerX < 0) {
-                _offX = step(_offX, 30, 1.5);
+                _offX = Utils.step(_offX, 30, 1.5);
                 if (_offX < 0) {
-                    _offX = step(_offX, 30, 0.7);
+                    _offX = Utils.step(_offX, 30, 0.7);
                 }
             }
 

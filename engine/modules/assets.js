@@ -1,9 +1,13 @@
 define('engine/modules/assets', [
     'engine/core/dispatcher',
-    'engine/core/texture'
+    'engine/core/texture',
+
+    'lib/js-yaml.min'
 ], function (
     Dispatcher,
-    Texture
+    Texture,
+
+    YAML
 ) {
     "use strict"
     let dispatcher = new Dispatcher();
@@ -11,6 +15,7 @@ define('engine/modules/assets', [
     let _textureCache = {};
     let _soundCache = {};
     let _jsonCache = {};
+    let _yamlCache = {};
 
     let _assetsRemaining = 0;
 
@@ -45,6 +50,34 @@ define('engine/modules/assets', [
         }
     };
 
+    let _loadPlainText = function (path, onComplete, onError) {
+        let xhr = new window.XMLHttpRequest();
+        if (xhr.overrideMimeType) {
+            xhr.overrideMimeType('application/json');
+        }
+        xhr.open('GET', path, true);
+
+        onError = onError || function (e) {
+            console.error(e);
+        };
+
+        xhr.onerror = e => onError('Error: loading file ' + path);
+        xhr.ontimeout = e => onError('Timeout: loading file ' + path);
+
+        xhr.onreadystatechange = function () {
+            let response;
+            if (xhr.readyState === 4) {
+                if ((xhr.status === 304) || (xhr.status === 200) || ((xhr.status === 0) && xhr.responseText)) {
+                    onComplete(xhr.responseText);
+                } else {
+                    onError('Error: State ' + xhr.readyState + ' ' + path);
+                }
+            }
+        };
+        xhr.send(null);
+    };
+
+
     let getJson = function (name) {
         return _jsonCache[name];
     };
@@ -55,35 +88,20 @@ define('engine/modules/assets', [
             path = path + '.json';
         }
 
+        _loadPlainText(path, data => {
+            let jsonData = JSON.parse(data);
+            _jsonCache[name] = jsonData;
+            _assetsRemaining--;
+            dispatcher.emit('jsonLoaded', jsonData);
+
+            if (_assetsRemaining === 0) {
+                dispatcher.emit('loadingComplete');
+            }
+        });
+
         _assetsRemaining++;
 
-        let xhr = new window.XMLHttpRequest();
-        if (xhr.overrideMimeType) {
-            xhr.overrideMimeType('application/json');
-        }
-        xhr.open('GET', path, true);
-        xhr.onerror = e => console.error('Error: loading JSON ' + source);
-        xhr.ontimeout = e => console.error('Timeout: loading JSON ' + source);
 
-        xhr.onreadystatechange = function () {
-            let response;
-            if (xhr.readyState === 4) {
-                if ((xhr.status === 304) || (xhr.status === 200) || ((xhr.status === 0) && xhr.responseText)) {
-                    response = xhr.responseText;
-                    let jsonData = JSON.parse(response);
-                    _jsonCache[name] = jsonData;
-                    _assetsRemaining--;
-                    dispatcher.emit('jsonLoaded', jsonData);
-
-                    if (_assetsRemaining === 0) {
-                        dispatcher.emit('loadingComplete');
-                    }
-                } else {
-                    callback('Error: State ' + xhr.readyState + ' ' + source);
-                }
-            }
-        };
-        xhr.send(null);
     };
 
     let loadJsons = function (paths) {
@@ -91,6 +109,41 @@ define('engine/modules/assets', [
 
         for (let ii = 0; ii < paths.length; ii++) {
             loadJson(paths[ii]);
+        }
+    };
+
+
+    let getYaml = function (name) {
+        return _yamlCache[name];
+    };
+
+    let loadYaml = function (path, name) {
+        name = name || path.replace('.yaml', '');
+        if (path.indexOf('.yaml') === -1) {
+            path = path + '.yaml';
+        }
+
+        _loadPlainText(path, data => {
+            let yamlData = YAML.load(data);
+            _yamlCache[name] = yamlData;
+            _assetsRemaining--;
+            dispatcher.emit('yamlLoaded', yamlData);
+
+            if (_assetsRemaining === 0) {
+                dispatcher.emit('loadingComplete');
+            }
+        });
+
+        _assetsRemaining++;
+
+
+    };
+
+    let loadYamls = function (paths) {
+        paths = [].concat(paths);
+
+        for (let ii = 0; ii < paths.length; ii++) {
+            loadYaml(paths[ii]);
         }
     };
 
@@ -106,6 +159,10 @@ define('engine/modules/assets', [
         getJson: getJson,
         loadJson: loadJson,
         loadJsons: loadJsons,
+
+        getYaml: getYaml,
+        loadYaml: loadYaml,
+        loadYamls: loadYamls,
 
         on: dispatcher.on,
         off: dispatcher.off
