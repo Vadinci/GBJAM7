@@ -46,11 +46,22 @@ define('game/entities/enemies/bug', [
         bug.addTag('enemy');
 
         let transform = bug.addComponent(new Transform(settings.x, settings.y));
-        let hitbox = bug.addComponent(new Hitbox(-6, -12, 12, 12));
+        let hitbox = bug.addComponent(new Hitbox(-6, -12, 12, 11));
         let actor = bug.addComponent(new Actor());
         let collider = bug.addComponent(new Collider());
         let physics = bug.addComponent(new Physics({}));
         let enemy = bug.addComponent(new Enemy({}));
+
+        //TODO make some creator for this.
+        let texture = Core.assets.getTexture('enemy_slime');
+        let strip = new FrameStrip(texture, 0, 0, 16, 16, 4, 1, 8, 16);
+
+        let animDefault = new Animation(strip.getFrames([0, 1]), 2, true);
+        let sprite = new Sprite();
+        sprite.addAnimation('default', animDefault);
+        sprite.setAnimation('default');
+
+        bug.addComponent(sprite);
 
         hitbox.debugColor = '#f00';
 

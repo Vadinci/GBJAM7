@@ -47,17 +47,18 @@ define('game/entities/player', [
         player.addTag('removeOnLevelExit');
 
         let transform = player.addComponent(new Transform(settings.x, settings.y));
-        let hitbox = player.addComponent(new Hitbox(-6, -12, 12, 12));
+        let hitbox = player.addComponent(new Hitbox(-6, -12, 12, 11));
         hitbox.debugColor = '#0ad';
         let actor = player.addComponent(new Actor());
         let physics = player.addComponent(new Physics({}));
 
         let collider = player.addComponent(new Collider());
         collider.addTag(G.CollisionTags.PLAYER);
+        collider.addCheck(G.CollisionTags.HARM);
 
         //TODO make some creator for this.
         let texture = Core.assets.getTexture('player');
-        let strip = new FrameStrip(texture, 0, 0, 64, 32, 8, 1, 32, 32);
+        let strip = new FrameStrip(texture, 0, 0, 64, 32, 8, 2, 32, 32);
 
         let animIdle = new Animation(strip.getFrames([0, 0, 0, 0, 0, 0, 0, 1]), 8, true);
         let animWalk = new Animation(strip.getFrames([2, 3]), 12, true);
@@ -75,6 +76,23 @@ define('game/entities/player', [
 
         player.addComponent(sprite);
         player.addComponent(new PlayerController());
+
+        player.on('collision', function (data) {
+            if (data.otherCollider.tags & G.CollisionTags.HARM) {
+                //enemy/attack collision
+                let attack = data.otherEntity;
+                let atkPos = attack.getComponent('transform').position;
+
+                let dAtkX = transform.position.x - atkPos.x;
+                let dAtkY = transform.position.y - atkPos.y;
+                let dAtkLen = Math.sqrt(dAtkX*dAtkX + dAtkY*dAtkY);
+                dAtkX /= dAtkLen;
+                dAtkY /= dAtkLen;
+
+                physics.vx = dAtkX*3;
+                physics.vy = dAtkY*2 - 1;
+            }
+        });
 
         return player;
     };

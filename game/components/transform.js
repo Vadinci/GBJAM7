@@ -115,6 +115,15 @@ define('game/components/transform', [
         }
     };
 
+    Transform.prototype.fromLocalPoint = function(x, y) {
+        this.recalculateMatrix();
+
+        return Matrix2D.multiplyVector(this._globalTransform, {
+            x: x,
+            y: y
+        });
+    };
+
 
     Object.defineProperties(Transform.prototype, {
         name: {

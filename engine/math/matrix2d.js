@@ -108,10 +108,10 @@ define('engine/math/matrix2d', [
      */
     Matrix2D.multiplyVector = function (mat, vector) {
         //z is 0
-        var x = mat[C00] * vector.x + mat[C01] * vector.x + mat[C02] * vector.x;
-        var y = mat[C10] * vector.y + mat[C11] * vector.y + mat[C12] * vector.y;
+        var x = mat[C00] * vector.x + mat[C01] * vector.x + mat[C02] * vector.x + mat[C20];
+        var y = mat[C10] * vector.y + mat[C11] * vector.y + mat[C12] * vector.y + mat[C21];
 
-        return new Vector2(x, y);
+        return { x: x, y: y };
     };
 
     Matrix2D.multiplyVectorDirect = function (mat, vector) {

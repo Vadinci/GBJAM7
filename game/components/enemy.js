@@ -1,7 +1,11 @@
 define('game/components/enemy', [
+    'engine/core',
+
     'game/globals',
     'game/utils'
 ], function (
+    Core,
+
     G,
     Utils
 ) {
@@ -19,13 +23,13 @@ define('game/components/enemy', [
 
                 _collider = _collider || _entity.getComponent('collider');
                 if (!_collider) throw "enemy needs a collider component";
-                _collider.addTag(G.CollisionTags.ENEMY);
+                _collider.addTag(G.CollisionTags.HARM);
 
                 _collider.addCheck(G.CollisionTags.PLAYER_ATTACK);
 
                 _entity.on('collision', data => {
                     if (data.otherCollider.tags & G.CollisionTags.PLAYER_ATTACK){
-                        //TODO take damage and whatnot
+                        Core.remove(_entity);
                     }
                 });
 

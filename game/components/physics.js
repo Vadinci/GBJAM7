@@ -46,6 +46,7 @@ define('game/components/physics', [
             },
 
             isFloored: function () {
+                if (Math.abs(_vy) > 0.01) return false;
                 return _actor.collidesAt(0, 1);
             }
         };

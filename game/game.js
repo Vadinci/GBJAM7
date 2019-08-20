@@ -29,7 +29,17 @@ require([
 ) {
     "use strict";
 
-    let addFilteredCanvas = function () {
+    let _initControls = function(){
+        Core.input.bindKeys('up', KeyCodes.UP);
+        Core.input.bindKeys('down', KeyCodes.DOWN);
+        Core.input.bindKeys('left', KeyCodes.LEFT);
+        Core.input.bindKeys('right', KeyCodes.RIGHT);
+
+        Core.input.bindKeys('jump', KeyCodes.Z);
+        Core.input.bindKeys('attack', KeyCodes.X);
+    };
+
+    let _addFilteredCanvas = function () {
         let canvas = Core.canvas;
 
         GameCanvas.init();
@@ -99,12 +109,14 @@ require([
         Core.engine.setDebug(true);
         Core.assets.loadTexture('assets/player.png', 'player');
         Core.assets.loadTexture('assets/tiles.png', 'tiles');
+        Core.assets.loadTexture('assets/enemy_slime.png', 'enemy_slime');
         Core.assets.loadJson('assets/levels/test.json', 'levels/test');
         Core.assets.loadJson('assets/levels/test2.json', 'levels/test2');
         Core.assets.loadJson('assets/levels/test3.json', 'levels/test3');
-        Core.assets.loadYaml('assets/entities/onewayplatform.yaml', 'entities/onewayplatform');
+        //Core.assets.loadYaml('assets/entities/onewayplatform.yaml', 'entities/onewayplatform');
         Core.assets.on('loadingComplete', function () {
-            addFilteredCanvas();
+            _initControls();
+            _addFilteredCanvas();
         }, { once: true });
     });
 
