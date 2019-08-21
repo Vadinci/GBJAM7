@@ -44,7 +44,7 @@
                  "type":"spawn",
                  "visible":true,
                  "width":0,
-                 "x":24,
+                 "x":8,
                  "y":80
                 }],
          "opacity":1,
@@ -63,18 +63,20 @@
                  "name":"exit:test2",
                  "properties":
                     {
+                     "direction":-1,
                      "map":"test2",
                      "spawnPoint":"right"
                     },
                  "propertytypes":
                     {
+                     "direction":"int",
                      "map":"string",
                      "spawnPoint":"string"
                     },
                  "rotation":0,
                  "type":"exit",
                  "visible":true,
-                 "width":8,
+                 "width":4,
                  "x":0,
                  "y":32
                 }],

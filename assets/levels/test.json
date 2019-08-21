@@ -56,7 +56,7 @@
                  "type":"spawn",
                  "visible":true,
                  "width":0,
-                 "x":112,
+                 "x":136,
                  "y":80
                 }],
          "opacity":1,
@@ -75,11 +75,13 @@
                  "name":"exit:test2",
                  "properties":
                     {
+                     "manual":true,
                      "map":"test2",
                      "spawnPoint":"doorLeft"
                     },
                  "propertytypes":
                     {
+                     "manual":"bool",
                      "map":"string",
                      "spawnPoint":"string"
                     },

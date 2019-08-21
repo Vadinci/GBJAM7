@@ -80,7 +80,8 @@ define('game/modules/level', [
 
                     targetMap: data.properties.map,
                     targetSpawnKey: data.properties.spawnPoint,
-                    manual: data.properties.manual || false
+                    manual: data.properties.manual || false,
+                    direction: data.properties.direction || 1
                 });
                 Core.add(exit);
             }
@@ -88,8 +89,10 @@ define('game/modules/level', [
 
         let _createLevelGeometry = function () {
             let walls = new Walls({
-                width: _map.width,
-                height: _map.height,
+                width: _map.width + 2,
+                height: _map.height + 2,
+                x: -16,
+                y: -16
             });
             let wallGrid = walls.getComponent('solidGrid');
             Core.add(walls);
@@ -100,7 +103,7 @@ define('game/modules/level', [
                     if (!collisionLayer[ix][iy]) continue;
                     switch (collisionLayer[ix][iy].idInSet) {
                         case 0:
-                            wallGrid.setSolid(ix, iy, true);
+                            wallGrid.setSolid(ix + 1, iy + 1, true);
                             break;
                         case 1:
                             Core.add(new OneWayPlatform({
@@ -110,6 +113,14 @@ define('game/modules/level', [
                             break;
                     }
                 }
+            }
+            for (let ix = 0; ix < _map.width + 2; ix++) {
+                wallGrid.setSolid(ix + 1, 0, true);
+                wallGrid.setSolid(ix + 1, _map.height + 1, true);
+            }
+            for (let iy = 0; iy < _map.height + 2; iy++) {
+                wallGrid.setSolid(0, iy + 1, true);
+                wallGrid.setSolid(_map.width + 1, iy + 1, true);
             }
         };
 

@@ -79,7 +79,7 @@ define('game/entities/player', [
         player.addComponent(sprite);
         player.addComponent(new PlayerController());
 
-        player.on('collision', function (data) {
+        player.on('collisionStart', function (data) {
             if (data.otherCollider.tags & G.CollisionTags.HARM) {
                 //enemy/attack collision
                 let attack = data.otherEntity;

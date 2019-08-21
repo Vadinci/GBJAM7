@@ -20,6 +20,9 @@ define('game/components/collider', [
         let _tags = 0;
         let _checkAgainst = 0;
 
+        let _collidingWith = [];
+        let _wasCollidingWith = [];
+
         //TODO move this function to hitbox itself?
         let collidesWith = function (other) {
             if (other.hitbox.left > _hitbox.right) return false;
@@ -31,11 +34,17 @@ define('game/components/collider', [
         };
 
         let handleCollisionWith = function (other) {
-            _entity.emit('collision', {
+            let data = {
                 collider: self,
                 otherCollider: other,
                 otherEntity: other.getEntity()
-            });
+            };
+
+            if (_wasCollidingWith.indexOf(other) === -1) {
+                _entity.emit('collisionStart', data);
+            }
+            _entity.emit('collision', data);
+            _collidingWith.push(other);
         };
 
         let addTag = function (tag) {
@@ -80,8 +89,32 @@ define('game/components/collider', [
 
                 CollisionManager.addCollider(self);
             },
+            update: function () {
+                for (let ii = 0; ii < _wasCollidingWith.length; ii++) {
+                    let other = _wasCollidingWith[ii];
+                    if (_collidingWith.indexOf(other) === -1) {
+                        _entity.emit('collisionEnd', {
+                            collider: self,
+                            otherCollider: other,
+                            otherEntity: other.getEntity()
+                        });
+                    }
+                }
+                //TODO can this be done (in one line :x) without creating a new array?
+                _wasCollidingWith = [].concat(_collidingWith);
+                _collidingWith.length = 0;
+            },
             die: function () {
                 CollisionManager.removeCollider(self);
+
+                for (let ii = 0; ii < _wasCollidingWith.length; ii++) {
+                    let other = _wasCollidingWith[ii];
+                    _entity.emit('collisionEnd', {
+                        collider: self,
+                        otherCollider: other,
+                        otherEntity: other.getEntity()
+                    });
+                }
             },
 
             getEntity: function () {

@@ -1,6 +1,8 @@
 define('game/entities/exit', [
     'game/globals',
+    'game/utils',
 
+    'engine/core',
     'engine/core/entity',
 
     'game/components/transform',
@@ -8,7 +10,9 @@ define('game/entities/exit', [
     'game/components/collider'
 ], function (
     G,
+    Utils,
 
+    Core,
     Entity,
 
     Transform,
@@ -34,6 +38,7 @@ define('game/entities/exit', [
         }
 
         let _manual = settings.manual;
+        let _direction = settings.direction || 1;
 
         let exit = new Entity({
             z: 1,
@@ -51,11 +56,38 @@ define('game/entities/exit', [
         collider.addTag(G.CollisionTags.EXIT);
         collider.addCheck(G.CollisionTags.PLAYER);
 
-        exit.on('collision', function (data) {
-            if (data.otherEntity.name !== 'player') return;
 
-            Navigation.warpTo(_targetMap, _targetSpawnKey);
-        });
+        if (_manual) {
+            let tryToTriggerManualExit = function () {
+                if (Core.input.keyDown('up')) {
+                    Navigation.warpTo(_targetMap, _targetSpawnKey);
+                }
+            };
+
+            exit.on('collisionStart', function (data) {
+                if (data.otherEntity.name !== 'player') return;
+
+                Core.input.on('keyDown', tryToTriggerManualExit);
+            });
+
+            exit.on('collisionEnd', function (data) {
+                if (data.otherEntity.name !== 'player') return;
+
+                Core.input.off('keyDown', tryToTriggerManualExit);
+            });
+        } else {
+            exit.on('collision', function (data) {
+                if (data.otherEntity.name !== 'player') return;
+                let player = data.otherEntity;
+
+                if (Utils.sign(player.getComponent('physics').vx) === _direction) {
+                    Navigation.warpTo(_targetMap, _targetSpawnKey);
+                }
+            });
+        }
+
+
+
 
         return exit;
     };
