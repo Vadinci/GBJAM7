@@ -46,6 +46,11 @@ define('game/entities/attack', [
             }
         });
 
+        //TODO wrap this and prevent multiple collisions with the same attack?
+        if (settings.onHit) {
+            attack.on('collision', settings.onHit);
+        }
+
 
         hitbox.debugColor = '#52a';
 

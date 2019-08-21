@@ -12,7 +12,7 @@ define('game/modules/framestrip', [
             for (let ic = 0; ic < cols; ic++) {
                 _frames.push(new Frame(
                     texture,
-                    sx + ic * w, sy * ir * h,
+                    sx + ic * w, sy + ir * h,
                     w, h,
                     ox || 0, oy || 0
                 ));

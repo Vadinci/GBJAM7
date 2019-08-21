@@ -61,10 +61,11 @@ define('game/entities/player', [
         let strip = new FrameStrip(texture, 0, 0, 64, 32, 8, 2, 32, 32);
 
         let animIdle = new Animation(strip.getFrames([0, 0, 0, 0, 0, 0, 0, 1]), 8, true);
-        let animWalk = new Animation(strip.getFrames([2, 3]), 12, true);
-        let animJump = new Animation(strip.getFrames([4, 5]), 12, true);
+        let animWalk = new Animation(strip.getFrames([2, 3]), 8, true);
+        let animJump = new Animation(strip.getFrames([4, 5]), 8, true);
         let animCharge = new Animation(strip.getFrames(6), 0, false);
         let animStab = new Animation(strip.getFrames([7, 6]), 8, false);
+        let animAirSweep = new Animation(strip.getFrames([8, 9]), 16, false);
 
         let sprite = new Sprite();
         sprite.addAnimation('idle', animIdle);
@@ -72,6 +73,7 @@ define('game/entities/player', [
         sprite.addAnimation('jump', animJump);
         sprite.addAnimation('charge', animCharge);
         sprite.addAnimation('stab', animStab);
+        sprite.addAnimation('airSweep', animAirSweep);
         sprite.setAnimation('idle');
 
         player.addComponent(sprite);

@@ -11,7 +11,8 @@ define('game/components/player/controller', [
     'game/states/player/walk',
     'game/states/player/jump',
     'game/states/player/charge',
-    'game/states/player/stab'
+    'game/states/player/stab',
+    'game/states/player/airsweep',
 ], function (
     Core,
     KeyCodes,
@@ -25,7 +26,8 @@ define('game/components/player/controller', [
     WalkState,
     JumpState,
     ChargeState,
-    StabState
+    StabState,
+    AirSweepState
 ) {
     "use strict";
     const COYOTE_FRAMES = 5;
@@ -53,6 +55,7 @@ define('game/components/player/controller', [
         _stateMachine.addState(JumpState);
         _stateMachine.addState(ChargeState);
         _stateMachine.addState(StabState);
+        _stateMachine.addState(AirSweepState);
 
 
         let _jumpBufferTimer = 0;
@@ -139,63 +142,7 @@ define('game/components/player/controller', [
                 }
 
                 _stateMachine.update();
-                /*
-                                let tvx = 0;
 
-                                if (Core.input.keyDown(kLEFT)) tvx -= 1.2;
-                                if (Core.input.keyDown(kRIGHT)) tvx += 1.2;
-
-                                if (_physics.isFloored()) {
-                                    _coyoteTimer = COYOTE_FRAMES;
-                                }
-
-                                if (Core.input.keyPressed(kJUMP) && !_isStabbing && !_isCharging) {
-                                    _jumpBufferTimer = BUFFER_FRAMES;
-                                }
-
-                                if (_jumpBufferTimer > 0 && _canJump()) {
-                                    _physics.vy = -3.15;
-                                    _jumpBufferTimer = 0;
-                                }
-
-
-                                if (Core.input.keyPressed(kATTACK) && _physics.isFloored() && !_isStabbing) {
-                                    _isCharging = true;
-                                }
-
-                                if (Core.input.keyReleased(kATTACK) && _isCharging) {
-                                    _isStabbing = true;
-                                    _isCharging = false;
-                                }
-
-                                _jumpBufferTimer--;
-                                _coyoteTimer--;
-
-                                if (_isCharging) {
-                                    tvx *= 0.1;
-                                }
-
-                                if (_isStabbing) {
-                                    tvx = 0;
-                                }
-
-                                _physics.vx = Utils.step(_physics.vx, tvx, 0.4);
-
-                                if (_physics.vx > 0.1) _transform.scale.x = 1;
-                                if (_physics.vx < -0.1) _transform.scale.x = -1;
-
-                                if (_isCharging) {
-                                    _sprite.setAnimation('charge');
-                                } else if (_isStabbing) {
-                                    _sprite.setAnimation('stab');
-                                } else if (!_physics.isFloored()) {
-                                    _sprite.setAnimation('jump');
-                                } else if (Math.abs(_physics.vx) > 0.1) {
-                                    _sprite.setAnimation('walk');
-                                } else {
-                                    _sprite.setAnimation('idle')
-                                };
-                                */
             }
         };
         return self;

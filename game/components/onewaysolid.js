@@ -9,7 +9,7 @@ define('game/components/onewaysolid', [
         let _oldOverlapsActor = solid.overlapsActor;
 
         solid.overlapsActor = function (actor, dx, dy) {
-            if (actor.hitbox.bottom + dy - 1 > solid.hitbox.top) return false;
+            if (actor.hitbox.bottom > solid.hitbox.top) return false;
             return _oldOverlapsActor(actor, dx, dy);
         }
 

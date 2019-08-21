@@ -95,6 +95,11 @@ require([
             y : 70
         }));
 
+        Core.add(new Bug({
+            x : 120,
+            y : 70
+        }));
+
         console.log(Core.assets.getYaml('entities/onewayplatform'));
     };
 

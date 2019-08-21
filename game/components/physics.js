@@ -59,6 +59,10 @@ define('game/components/physics', [
             vy: {
                 get: () => _vy,
                 set: v => _vy = v
+            },
+            gravity: {
+                get: () => _gravity,
+                set: v => _gravity = v
             }
         });
 

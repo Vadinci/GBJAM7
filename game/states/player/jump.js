@@ -22,8 +22,8 @@ define('game/states/player/jump', [
         update: function (data) {
             data.handleLeftRight();
 
-            if (Core.input.keyPressed('jump')) {
-                //TODO coyote time
+            if (Core.input.keyPressed('attack')) {
+                data.stateMachine.setState('airSweep');
             }
 
             if (data.physics.isFloored()) {

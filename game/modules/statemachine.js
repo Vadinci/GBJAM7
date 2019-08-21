@@ -35,8 +35,6 @@ define('game/modules/statemachine', [
             _currentState = undefined;
             if (!_states[key]) return;
 
-            console.log(key);
-
             _currentState = _states[key];
             _applyOnState('start');
 
