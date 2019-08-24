@@ -1,0 +1,24 @@
+baseFolder : assets
+
+textures:
+  player: textures/player.png
+  tiles: textures/tiles.png
+  dust: textures/dust.png
+  impact_pop: textures/impact_pop.png
+  enemy_slime: textures/enemy_slime.png
+  enemy_bird: textures/enemy_bird.png
+
+sounds:
+  #sfx
+  jump: sfx/jump.wav
+  #music
+  music/ingame : music/ingame.mp3
+
+jsons:
+  #levels
+  levels/test: levels/test
+  levels/test2: levels/test2
+  levels/test3: levels/test3
+
+yamls:
+  effects: effects.yaml

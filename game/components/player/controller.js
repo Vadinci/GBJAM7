@@ -98,6 +98,8 @@ define('game/components/player/controller', [
             if (_jumpBufferTimer > 0 && _coyoteTimer > 0) {
                 _physics.vy = -3.15;
                 _jumpBufferTimer = 0;
+
+                Core.assets.getSound('jump').play();
             }
 
             _didHandleJump = true;

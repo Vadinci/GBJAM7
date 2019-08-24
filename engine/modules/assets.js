@@ -1,11 +1,13 @@
 define('engine/modules/assets', [
     'engine/core/dispatcher',
     'engine/core/texture',
+    'engine/core/sound',
 
     'lib/js-yaml.min'
 ], function (
     Dispatcher,
     Texture,
+    Sound,
 
     YAML
 ) {
@@ -23,7 +25,7 @@ define('engine/modules/assets', [
         return _textureCache[name];
     };
 
-    let loadTexture = function (path, name) {
+    let loadTexture = function (path, name, onLoaded) {
         name = name || path.replace('.png', '');
         if (path.indexOf('.png') === -1) {
             path = path + '.png';
@@ -35,6 +37,7 @@ define('engine/modules/assets', [
             _assetsRemaining--;
 
             dispatcher.emit('textureLoaded', data.texture);
+            onLoaded && onLoaded(data.texture);
 
             if (_assetsRemaining === 0) {
                 dispatcher.emit('loadingComplete');
@@ -49,6 +52,42 @@ define('engine/modules/assets', [
             loadTexture(paths[ii]);
         }
     };
+
+
+
+    let getSound = function (name) {
+        return _soundCache[name];
+    };
+
+    let loadSound = function (path, name, onLoaded) {
+        name = name || path.replace('.wav', '').replace('.mp3', '');
+        if (path.indexOf('.wav') === -1 && path.indexOf('.mp3') === -1) {
+            throw "can't load a sound without a defined extension";
+        }
+
+        _assetsRemaining++;
+        Sound.load(path, data => {
+            _soundCache[name] = data;
+            _assetsRemaining--;
+
+            dispatcher.emit('soundLoaded', data);
+            onLoaded && onLoaded(data);
+
+            if (_assetsRemaining === 0) {
+                dispatcher.emit('loadingComplete');
+            }
+        });
+    };
+
+    let loadSounds = function (paths) {
+        paths = [].concat(paths);
+
+        for (let ii = 0; ii < paths.length; ii++) {
+            loadSound(paths[ii]);
+        }
+    };
+
+
 
     let _loadPlainText = function (path, onComplete, onError) {
         let xhr = new window.XMLHttpRequest();
@@ -82,7 +121,7 @@ define('engine/modules/assets', [
         return _jsonCache[name];
     };
 
-    let loadJson = function (path, name) {
+    let loadJson = function (path, name, onLoaded) {
         name = name || path.replace('.json', '');
         if (path.indexOf('.json') === -1) {
             path = path + '.json';
@@ -92,7 +131,9 @@ define('engine/modules/assets', [
             let jsonData = JSON.parse(data);
             _jsonCache[name] = jsonData;
             _assetsRemaining--;
+
             dispatcher.emit('jsonLoaded', jsonData);
+            onLoaded && onLoaded(jsonData);
 
             if (_assetsRemaining === 0) {
                 dispatcher.emit('loadingComplete');
@@ -117,7 +158,7 @@ define('engine/modules/assets', [
         return _yamlCache[name];
     };
 
-    let loadYaml = function (path, name) {
+    let loadYaml = function (path, name, onLoaded) {
         name = name || path.replace('.yaml', '');
         if (path.indexOf('.yaml') === -1) {
             path = path + '.yaml';
@@ -127,7 +168,9 @@ define('engine/modules/assets', [
             let yamlData = YAML.load(data);
             _yamlCache[name] = yamlData;
             _assetsRemaining--;
+
             dispatcher.emit('yamlLoaded', yamlData);
+            onLoaded && onLoaded(yamlData);
 
             if (_assetsRemaining === 0) {
                 dispatcher.emit('loadingComplete');
@@ -152,9 +195,9 @@ define('engine/modules/assets', [
         loadTexture: loadTexture,
         loadTextures: loadTextures,
 
-        getSound: () => undefined,
-        loadSound: () => undefined,
-        loadSounds: () => undefined,
+        getSound: getSound,
+        loadSound: loadSound,
+        loadSounds: loadSounds,
 
         getJson: getJson,
         loadJson: loadJson,

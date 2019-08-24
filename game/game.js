@@ -29,7 +29,7 @@ require([
 ) {
     "use strict";
 
-    let _initControls = function(){
+    let _initControls = function () {
         Core.input.bindKeys('up', KeyCodes.UP);
         Core.input.bindKeys('down', KeyCodes.DOWN);
         Core.input.bindKeys('left', KeyCodes.LEFT);
@@ -91,16 +91,22 @@ require([
         document.body.append(canvas.getCanvasElement());
 
         Core.add(new Bug({
-            x : 80,
-            y : 60
+            x: 80,
+            y: 60
         }));
 
         Core.add(new Bug({
-            x : 120,
-            y : 60
+            x: 120,
+            y: 60
         }));
 
-        console.log(Core.assets.getYaml('entities/onewayplatform'));
+        let instance = Core.assets.getSound('music/ingame').play(true);
+        let tryMusic = function () {
+            if (instance.isPlaying) return;
+            instance.play();
+            setTimeout(tryMusic, 25);
+        };
+        tryMusic();
     };
 
     Core.init({
@@ -112,7 +118,38 @@ require([
         }
     }, function () {
         Core.engine.setDebug(true);
+        Core.assets.loadYaml('./assets.yaml', null, function (data) {
+            let baseFolder = data.baseFolder;
 
+            let loadFunc = undefined;
+            let loadAllIn = function (group) {
+                for (let key in group) {
+                    loadFunc('./' + baseFolder + '/' + group[key], key);
+                }
+            };
+
+            //load textures
+            loadFunc = Core.assets.loadTexture;
+            loadAllIn(data.textures);
+
+            //load sounds
+            loadFunc = Core.assets.loadSound;
+            loadAllIn(data.sounds);
+
+            //load yamls
+            loadFunc = Core.assets.loadYaml;
+            loadAllIn(data.yamls);
+
+            //load jsons
+            loadFunc = Core.assets.loadJson;
+            loadAllIn(data.jsons);
+
+            Core.assets.on('loadingComplete', function () {
+                _initControls();
+                _addFilteredCanvas();
+            }, { once: true });
+        });
+        /*
         Core.assets.loadTexture('assets/player.png', 'player');
         Core.assets.loadTexture('assets/tiles.png', 'tiles');
         Core.assets.loadTexture('assets/dust.png', 'dust');
@@ -126,11 +163,14 @@ require([
 
         Core.assets.loadYaml('assets/effects.yaml', 'effects');
 
+        Core.assets.loadSound('assets/sfx/jump.wav', 'jump');
+
         //Core.assets.loadYaml('assets/entities/onewayplatform.yaml', 'entities/onewayplatform');
         Core.assets.on('loadingComplete', function () {
             _initControls();
             _addFilteredCanvas();
         }, { once: true });
+        */
     });
 
 });
