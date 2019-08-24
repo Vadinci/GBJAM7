@@ -66,6 +66,7 @@ define('game/entities/player', [
         let animCharge = new Animation(strip.getFrames(6), 0, false);
         let animStab = new Animation(strip.getFrames([7, 6]), 8, false);
         let animAirSweep = new Animation(strip.getFrames([8, 9]), 16, false);
+        let animHit = new Animation(strip.getFrames([10, 11]), 16, false);
 
         let sprite = new Sprite();
         sprite.addAnimation('idle', animIdle);
@@ -74,25 +75,15 @@ define('game/entities/player', [
         sprite.addAnimation('charge', animCharge);
         sprite.addAnimation('stab', animStab);
         sprite.addAnimation('airSweep', animAirSweep);
+        sprite.addAnimation('hit', animHit);
         sprite.setAnimation('idle');
 
         player.addComponent(sprite);
-        player.addComponent(new PlayerController());
+        let controller = player.addComponent(new PlayerController());
 
         player.on('collisionStart', function (data) {
             if (data.otherCollider.tags & G.CollisionTags.HARM) {
-                //enemy/attack collision
-                let attack = data.otherEntity;
-                let atkPos = attack.getComponent('transform').position;
-
-                let dAtkX = transform.position.x - atkPos.x;
-                let dAtkY = transform.position.y - atkPos.y;
-                let dAtkLen = Math.sqrt(dAtkX*dAtkX + dAtkY*dAtkY);
-                dAtkX /= dAtkLen;
-                dAtkY /= dAtkLen;
-
-                physics.vx = dAtkX*3;
-                physics.vy = dAtkY*2 - 1;
+               controller.hit();
             }
         });
 

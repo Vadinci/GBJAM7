@@ -13,6 +13,8 @@ define('game/components/player/controller', [
     'game/states/player/charge',
     'game/states/player/stab',
     'game/states/player/airsweep',
+    'game/states/player/dash',
+    'game/states/player/hit'
 ], function (
     Core,
     KeyCodes,
@@ -27,7 +29,9 @@ define('game/components/player/controller', [
     JumpState,
     ChargeState,
     StabState,
-    AirSweepState
+    AirSweepState,
+    DashState,
+    HitState
 ) {
     "use strict";
     const COYOTE_FRAMES = 5;
@@ -56,6 +60,8 @@ define('game/components/player/controller', [
         _stateMachine.addState(ChargeState);
         _stateMachine.addState(StabState);
         _stateMachine.addState(AirSweepState);
+        _stateMachine.addState(DashState);
+        _stateMachine.addState(HitState);
 
 
         let _jumpBufferTimer = 0;
@@ -147,6 +153,10 @@ define('game/components/player/controller', [
 
                 _coyoteTimer--;
                 _jumpBufferTimer--;
+            },
+
+            hit : function(){
+                _stateMachine.setState('hit');
             }
         };
         return self;

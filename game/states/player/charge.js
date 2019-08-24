@@ -26,7 +26,9 @@ define('game/states/player/charge', [
             data.handleLeftRight(true);
             if (Core.input.keyReleased('attack')) this.isHolding = false;
 
-            if (!this.isHolding && this.timer > 4) {
+            if (!this.isHolding && this.timer > 30) {
+                data.stateMachine.setState('dash');
+            } else if (!this.isHolding && this.timer > 4) {
                 data.stateMachine.setState('stab');
             }
         }

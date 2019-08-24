@@ -47,7 +47,8 @@ define('engine/core/dispatcher', [
             let listener = {
                 callback: cb,
                 priority: props.priority || 0,
-                //once : props.once || false
+                context : props.context || null,
+                once : props.once || false
             };
 
             _listeners[key].push(listener);
@@ -84,7 +85,7 @@ define('engine/core/dispatcher', [
             let doCancel;
             for (ii = 0; ii < list.length; ii++) {
                 if (list[ii] === undefined) continue;
-                doCancel = list[ii].callback(data);
+                doCancel = list[ii].callback.call(list[ii].context, data);
                 if (doCancel && !preventCancel) break;
             }
         };
