@@ -92,12 +92,12 @@ require([
 
         Core.add(new Bug({
             x : 80,
-            y : 70
+            y : 60
         }));
 
         Core.add(new Bug({
             x : 120,
-            y : 70
+            y : 60
         }));
 
         console.log(Core.assets.getYaml('entities/onewayplatform'));
@@ -112,12 +112,20 @@ require([
         }
     }, function () {
         Core.engine.setDebug(true);
+
         Core.assets.loadTexture('assets/player.png', 'player');
         Core.assets.loadTexture('assets/tiles.png', 'tiles');
+        Core.assets.loadTexture('assets/dust.png', 'dust');
+        Core.assets.loadTexture('assets/impact_pop.png', 'impact_pop');
         Core.assets.loadTexture('assets/enemy_slime.png', 'enemy_slime');
+        Core.assets.loadTexture('assets/enemy_bird.png', 'enemy_bird');
+
         Core.assets.loadJson('assets/levels/test.json', 'levels/test');
         Core.assets.loadJson('assets/levels/test2.json', 'levels/test2');
         Core.assets.loadJson('assets/levels/test3.json', 'levels/test3');
+
+        Core.assets.loadYaml('assets/effects.yaml', 'effects');
+
         //Core.assets.loadYaml('assets/entities/onewayplatform.yaml', 'entities/onewayplatform');
         Core.assets.on('loadingComplete', function () {
             _initControls();

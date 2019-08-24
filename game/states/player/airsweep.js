@@ -6,7 +6,8 @@ define('game/states/player/airsweep', [
     'game/utils',
     'game/modules/state',
 
-    'game/entities/attack'
+    'game/entities/attack',
+    'game/entities/effect'
 ], function (
     Core,
     KeyCodes,
@@ -15,7 +16,8 @@ define('game/states/player/airsweep', [
     Utils,
     State,
 
-    Attack
+    Attack,
+    Effect
 ) {
     "use strict";
     return new State({
@@ -41,8 +43,11 @@ define('game/states/player/airsweep', [
                     a: a,
                     b: b,
                     tags: [G.CollisionTags.PLAYER_ATTACK],
-                    onHit: function () {
+                    onHit: function (col) {
+                        let enemy = col.otherEntity;
+                        let enemyPos = enemy.getComponent('transform').position;
                         data.physics.vy = -3.5;
+                        Core.add(new Effect('impact_pop', { x: enemyPos.x, y: enemyPos.y - 4 }));
                     }
                 }));
 

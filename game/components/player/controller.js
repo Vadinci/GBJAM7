@@ -143,6 +143,8 @@ define('game/components/player/controller', [
 
                 _stateMachine.update();
 
+                _coyoteTimer--;
+                _jumpBufferTimer--;
             }
         };
         return self;

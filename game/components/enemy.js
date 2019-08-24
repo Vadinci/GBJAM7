@@ -14,6 +14,12 @@ define('game/components/enemy', [
         let _collider = settings.collider;
         let _physics;
 
+        let onCollision = function (data) {
+            if (data.otherCollider.tags & G.CollisionTags.PLAYER_ATTACK) {
+                _entity.emit('hurt');
+            }
+        }
+
         let self = {
             name: 'enemy',
 
@@ -27,16 +33,13 @@ define('game/components/enemy', [
 
                 _collider.addCheck(G.CollisionTags.PLAYER_ATTACK);
 
-                _entity.on('collision', data => {
-                    if (data.otherCollider.tags & G.CollisionTags.PLAYER_ATTACK){
-                        Core.remove(_entity);
-                    }
-                });
-
-                //TODO get physics
+                _entity.on('collisionStart', onCollision);
             },
             die: function () {
+                _collider.removeTag(G.CollisionTags.HARM);
+                _collider.removeCheck(G.CollisionTags.PLAYER_ATTACK);
 
+                _entity.off('collisionStart', onCollision);
             }
         };
 

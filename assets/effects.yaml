@@ -1,0 +1,27 @@
+dust :
+  texture : dust
+  offsetX : 0
+  offsetY : 0
+  frame :
+    width : 16
+    height : 16
+    originX : 8
+    originY : 16
+  frameCountX : 4
+  frameCountY : 1
+  frames : [0,1,2,3]
+  speed : 16
+
+impact_pop :
+  texture : impact_pop
+  offsetX : 0
+  offsetY : 0
+  frame :
+    width : 16
+    height : 16
+    originX : 8
+    originY : 8
+  frameCountX : 4
+  frameCountY : 1
+  frames : [0,1,2,3]
+  speed : 12

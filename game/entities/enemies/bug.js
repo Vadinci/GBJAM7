@@ -14,7 +14,9 @@ define('game/entities/enemies/bug', [
 
     'game/modules/framestrip',
     'game/modules/animation',
-    'game/components/sprite'
+    'game/components/sprite',
+
+    'game/entities/effect'
 ], function (
     G,
     Utils,
@@ -31,7 +33,9 @@ define('game/entities/enemies/bug', [
 
     FrameStrip,
     Animation,
-    Sprite
+    Sprite,
+
+    Effect
 ) {
     "use strict";
     return function (settings) {
@@ -56,9 +60,11 @@ define('game/entities/enemies/bug', [
         let texture = Core.assets.getTexture('enemy_slime');
         let strip = new FrameStrip(texture, 0, 0, 16, 16, 4, 1, 8, 16);
 
-        let animDefault = new Animation(strip.getFrames([0, 1]), 2, true);
+        let animDefault = new Animation(strip.getFrames([0, 1]), 4, true);
+        let animDie = new Animation(strip.getFrames([2, 3]), 8, false);
         let sprite = new Sprite();
         sprite.addAnimation('default', animDefault);
+        sprite.addAnimation('die', animDie);
         sprite.setAnimation('default');
 
         bug.addComponent(sprite);
@@ -75,6 +81,18 @@ define('game/entities/enemies/bug', [
                     physics.vx *= -1;
                 }
             }
+        });
+
+        bug.on('hurt', () => {
+            bug.removeComponent('enemy');
+            bug.removeComponent('ledgeTurner');
+            physics.vx = 0;
+
+            sprite.setAnimation('die');
+            animDie.on('finish', () => {
+                Core.remove(bug);
+                Core.add(new Effect('dust', { x: transform.position.x, y: transform.position.y }));
+            }, { once: true });
         });
 
         return bug;
