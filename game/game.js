@@ -86,16 +86,6 @@ require([
         canvas.getCanvasElement().style.height = '288px';
         document.body.append(canvas.getCanvasElement());
 
-        Core.add(new Bug({
-            x: 80,
-            y: 60
-        }));
-
-        Core.add(new Bug({
-            x: 120,
-            y: 60
-        }));
-
         let instance = Core.assets.getSound('music/ingame').play(true);
         let tryMusic = function () {
             if (instance.isPlaying) return;

@@ -116,14 +116,19 @@ define('engine/core/entity', [
         };
 
         let removeComponent = function (component) {
+            if (typeof component === 'string'){
+                component = getComponent(component);
+            }
+            if (!component) return;
             let idx = _components.indexOf(component);
             if (idx === -1) {
                 console.warn('component ' + component.name + ' was not added to entity ' + self.name);
                 return;
             }
+            component.die();
             _components.splice(idx, 1);
 
-            for (let name in _componentCalls) {
+            for (let key in _componentCalls) {
                 let list = _componentCalls[key];
                 for (let ii = list.length - 1; ii >= 0; --ii) {
                     if (list[ii] === idx) list.splice(ii, 1);
