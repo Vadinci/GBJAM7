@@ -16,7 +16,7 @@ define('game/components/enemy', [
 
         let onCollision = function (data) {
             if (data.otherCollider.tags & G.CollisionTags.PLAYER_ATTACK) {
-                _entity.emit('hurt');
+                _entity.emit('hurt', data);
             }
         }
 

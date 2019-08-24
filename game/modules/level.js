@@ -108,6 +108,7 @@ define('game/modules/level', [
                         key = 'bird';
                         break;
                     case 2: //shield gob
+                        key = 'shieldgoblin';
                         break;
                     case 3: //sword gob
                         break;

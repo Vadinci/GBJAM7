@@ -37,9 +37,9 @@ define('game/components/hitbox', [
             writable: false,
             value: 'hitbox'
         },
-        left: { get: function () { return this.x + this._transform.position.x; } },
+        left: { get: function () { return this.x + this._transform.worldPosition.x; } },
         right: { get: function () { return this.left + this.width; } },
-        top: { get: function () { return this.y + this._transform.position.y; } },
+        top: { get: function () { return this.y + this._transform.worldPosition.y; } },
         bottom: { get: function () { return this.top + this.height; } }
     });
 

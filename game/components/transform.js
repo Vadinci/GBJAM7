@@ -115,7 +115,7 @@ define('game/components/transform', [
         }
     };
 
-    Transform.prototype.fromLocalPoint = function(x, y) {
+    Transform.prototype.fromLocalPoint = function (x, y) {
         this.recalculateMatrix();
 
         return Matrix2D.multiplyVector(this._globalTransform, {
@@ -138,6 +138,9 @@ define('game/components/transform', [
         },
         position: {
             get: function () { return this._position; }
+        },
+        worldPosition: {
+            get: function () { return this.fromLocalPoint(0, 0); }
         },
         scale: {
             get: function () { return this._scale; }

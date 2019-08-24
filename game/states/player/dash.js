@@ -6,6 +6,8 @@ define('game/states/player/dash', [
     'game/utils',
     'game/modules/state',
 
+    'game/entities/attack',
+
     'game/managers/camera'
 ], function (
     Core,
@@ -14,6 +16,8 @@ define('game/states/player/dash', [
     G,
     Utils,
     State,
+
+    Attack,
 
     Camera
 ) {
@@ -25,6 +29,19 @@ define('game/states/player/dash', [
             this.physics = data.physics;
             data.sprite.setAnimation('dash');
             data.entity.on('collisionX', this.onHitWall, { context: this });
+
+            this.attack = new Attack({
+                a: { x: 12, y: -5 },
+                b: { x: 30, y: -1 },
+                tags: [G.CollisionTags.PLAYER_ATTACK],
+                onHit: function (col) {
+                    Camera.shake(5);
+                },
+                lifeTime : -1
+            });
+            this.attack.name = 'dashAttack';
+            this.attack.getComponent('transform').parent = data.transform;
+            Core.add(this.attack);
         },
         update: function (data) {
             data.physics.vx += data.transform.scale.x * 0.5;
@@ -33,6 +50,7 @@ define('game/states/player/dash', [
         },
         stop: function (data) {
             data.entity.off('collisionX', this.onHitWall);
+            Core.remove(this.attack);
         }
     });
 

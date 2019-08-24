@@ -41,8 +41,10 @@ define('game/entities/attack', [
             name: 'life',
             duration: lifeTime,
             update: function () {
-                this.duration--;
-                if (this.duration <= 0) Core.remove(attack);
+                if (this.duration > 0) {
+                    this.duration--;
+                    if (this.duration <= 0) Core.remove(attack);
+                }
             }
         });
 
