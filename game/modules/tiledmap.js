@@ -47,9 +47,22 @@ define('game/modules/tiledmap', [
 
         let _parseObject = function (obj) {
             let objData = {};
+            let id = obj.gid || 0;
+            let idInSet = id;
+
+            let set = 0;
+            while (
+                set < _tilesets.length &&
+                id >= _tilesets[set].firstGID
+            ) {
+                idInSet = id - _tilesets[set].firstGID;
+                set++;
+            }
 
             objData.name = obj.name || "object";
 
+            objData.id = id;
+            objData.idInSet = idInSet;
             objData.type = obj.type;
             objData.x = obj.x;
             objData.y = obj.y;
@@ -77,9 +90,7 @@ define('game/modules/tiledmap', [
                     return _mapData.layers[ii];
                 }
             }
-            if (Utils.isDev()) {
-                console.error("layer named " + key + " couldn't be found");
-            }
+
             return undefined;
         };
 

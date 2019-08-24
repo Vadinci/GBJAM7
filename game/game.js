@@ -9,9 +9,7 @@ require([
 
     'game/managers/camera',
     'game/managers/collision',
-    'game/managers/navigation',
-
-    'game/entities/enemies/bug'
+    'game/managers/navigation'
 ], function (
     Core,
 
@@ -23,9 +21,7 @@ require([
 
     Camera,
     CollisionManager,
-    Navigation,
-
-    Bug
+    Navigation
 ) {
     "use strict";
 

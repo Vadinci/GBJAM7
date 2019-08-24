@@ -5,8 +5,11 @@ textures:
   tiles: textures/tiles.png
   dust: textures/dust.png
   impact_pop: textures/impact_pop.png
+
   enemy_slime: textures/enemy_slime.png
   enemy_bird: textures/enemy_bird.png
+  enemy_sword: textures/enemy_sword.png
+  enemy_shield: textures/enemy_shield.png
 
 sounds:
   #sfx

@@ -66,15 +66,6 @@ define('game/components/player/controller', [
 
         let _jumpBufferTimer = 0;
         let _coyoteTimer = 0;
-        /*
-                let _isStabbing = false;
-                let _isCharging = false;
-
-                let _canJump = function () {
-                    console.log(_coyoteTimer);
-                    return _coyoteTimer > 0;
-                };
-            */
 
         let _didHandleLeftRight = false;
         let _didHandleJump = false;

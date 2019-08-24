@@ -30,6 +30,8 @@ define('game/modules/level', [
     Camera
 ) {
     "use strict";
+    let _enemyCache = {};
+
     return function (key) {
         let _map = new TiledMap('levels/' + key);
 
@@ -39,6 +41,8 @@ define('game/modules/level', [
 
         let _findSpawns = function () {
             let spawnData = _map.getObjectLayer('spawns');
+            if (!spawnData) return;
+
             for (let ii = 0; ii < spawnData.length; ii++) {
                 let data = spawnData[ii];
 
@@ -64,6 +68,8 @@ define('game/modules/level', [
 
         let _createExits = function () {
             let exitData = _map.getObjectLayer('exits');
+            if (!exitData) return;
+
             for (let ii = 0; ii < exitData.length; ii++) {
                 let data = exitData[ii];
 
@@ -84,6 +90,37 @@ define('game/modules/level', [
                     direction: data.properties.direction || 1
                 });
                 Core.add(exit);
+            }
+        };
+
+        let _spawnEnemies = function () {
+            let enemyData = _map.getObjectLayer('enemies');
+            if (!enemyData) return;
+
+            for (let ii = 0; ii < enemyData.length; ii++) {
+                let data = enemyData[ii];
+                let key;
+                switch (data.idInSet) {
+                    case 0: //slime
+                        key = 'slime';
+                        break;
+                    case 1: //bird
+                        break;
+                    case 2: //shield gob
+                        break;
+                    case 3: //sword gob
+                        break;
+                }
+                data.x += 8;
+                if (_enemyCache[key]) {
+                    let K = _enemyCache[key];
+                    Core.add(new K(data));
+                } else {
+                    require(['game/entities/enemies/' + key], function (K) {
+                        _enemyCache[key] = K;
+                        Core.add(new K(data));
+                    });
+                }
             }
         };
 
@@ -173,6 +210,8 @@ define('game/modules/level', [
             }));
 
             _createExits();
+
+            _spawnEnemies();
         };
 
         let clear = function () {

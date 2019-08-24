@@ -1,4 +1,4 @@
-define('game/entities/enemies/bug', [
+define('game/entities/enemies/slime', [
     'game/globals',
     'game/utils',
 
@@ -41,20 +41,20 @@ define('game/entities/enemies/bug', [
     return function (settings) {
         settings = settings || {};
 
-        let bug = new Entity({
+        let slime = new Entity({
             z: 10,
             priority: 100,
-            name: 'bug'
+            name: 'slime'
         });
-        bug.addTag('removeOnLevelExit');
-        bug.addTag('enemy');
+        slime.addTag('removeOnLevelExit');
+        slime.addTag('enemy');
 
-        let transform = bug.addComponent(new Transform(settings.x, settings.y));
-        let hitbox = bug.addComponent(new Hitbox(-6, -12, 12, 11));
-        let actor = bug.addComponent(new Actor());
-        let collider = bug.addComponent(new Collider());
-        let physics = bug.addComponent(new Physics({}));
-        let enemy = bug.addComponent(new Enemy({}));
+        let transform = slime.addComponent(new Transform(settings.x, settings.y));
+        let hitbox = slime.addComponent(new Hitbox(-6, -12, 12, 11));
+        let actor = slime.addComponent(new Actor());
+        let collider = slime.addComponent(new Collider());
+        let physics = slime.addComponent(new Physics({}));
+        let enemy = slime.addComponent(new Enemy({}));
 
         //TODO make some creator for this.
         let texture = Core.assets.getTexture('enemy_slime');
@@ -67,14 +67,14 @@ define('game/entities/enemies/bug', [
         sprite.addAnimation('die', animDie);
         sprite.setAnimation('default');
 
-        bug.addComponent(sprite);
+        slime.addComponent(sprite);
 
         hitbox.debugColor = '#f00';
 
         physics.vx = Core.random.pick([-0.5, 0.5]);
 
-        bug.on('collisionX', () => physics.vx *= -1);
-        bug.addComponent({
+        slime.on('collisionX', () => physics.vx *= -1);
+        slime.addComponent({
             name: 'ledgeTurner',
             update: function (data) {
                 if (!actor.collidesAt((hitbox.width + 1) * Utils.sign(physics.vx), 1)) {
@@ -83,18 +83,18 @@ define('game/entities/enemies/bug', [
             }
         });
 
-        bug.on('hurt', () => {
-            bug.removeComponent('enemy');
-            bug.removeComponent('ledgeTurner');
+        slime.on('hurt', () => {
+            slime.removeComponent('enemy');
+            slime.removeComponent('ledgeTurner');
             physics.vx = 0;
 
             sprite.setAnimation('die');
             animDie.on('finish', () => {
-                Core.remove(bug);
+                Core.remove(slime);
                 Core.add(new Effect('dust', { x: transform.position.x, y: transform.position.y }));
             }, { once: true });
         });
 
-        return bug;
+        return slime;
     };
 });
