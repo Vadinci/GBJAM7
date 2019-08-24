@@ -6,7 +6,9 @@ define('game/states/player/stab', [
     'game/utils',
     'game/modules/state',
 
-    'game/entities/attack'
+    'game/entities/attack',
+
+    'game/managers/camera'
 ], function (
     Core,
     KeyCodes,
@@ -15,7 +17,9 @@ define('game/states/player/stab', [
     Utils,
     State,
 
-    Attack
+    Attack,
+
+    Camera
 ) {
     "use strict";
     return new State({
@@ -36,7 +40,10 @@ define('game/states/player/stab', [
                 Core.add(new Attack({
                     a: a,
                     b: b,
-                    tags: [G.CollisionTags.PLAYER_ATTACK]
+                    tags: [G.CollisionTags.PLAYER_ATTACK],
+                    onHit: function (col) {
+                        Camera.shake(5);
+                    }
                 }));
             }
 

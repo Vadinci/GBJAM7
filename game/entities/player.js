@@ -58,7 +58,7 @@ define('game/entities/player', [
 
         //TODO make some creator for this.
         let texture = Core.assets.getTexture('player');
-        let strip = new FrameStrip(texture, 0, 0, 64, 32, 8, 2, 32, 32);
+        let strip = new FrameStrip(texture, 0, 0, 64, 32, 8, 3, 32, 32);
 
         let animIdle = new Animation(strip.getFrames([0, 0, 0, 0, 0, 0, 0, 1]), 8, true);
         let animWalk = new Animation(strip.getFrames([2, 3]), 8, true);
@@ -66,7 +66,10 @@ define('game/entities/player', [
         let animCharge = new Animation(strip.getFrames(6), 0, false);
         let animStab = new Animation(strip.getFrames([7, 6]), 8, false);
         let animAirSweep = new Animation(strip.getFrames([8, 9]), 16, false);
-        let animHit = new Animation(strip.getFrames([10, 11]), 16, false);
+        let animHit = new Animation(strip.getFrames([10, 11, 12, 13]), 16, false); //TODO initial and loop?
+        let animCharged = new Animation(strip.getFrames([14, 15]), 16, true);
+        let animDash = new Animation(strip.getFrames([16, 17]), 16, true);
+        //TODO animDie
 
         let sprite = new Sprite();
         sprite.addAnimation('idle', animIdle);
@@ -76,6 +79,8 @@ define('game/entities/player', [
         sprite.addAnimation('stab', animStab);
         sprite.addAnimation('airSweep', animAirSweep);
         sprite.addAnimation('hit', animHit);
+        sprite.addAnimation('charged', animCharged);
+        sprite.addAnimation('dash', animDash);
         sprite.setAnimation('idle');
 
         player.addComponent(sprite);
@@ -83,7 +88,7 @@ define('game/entities/player', [
 
         player.on('collisionStart', function (data) {
             if (data.otherCollider.tags & G.CollisionTags.HARM) {
-               controller.hit();
+                controller.hit();
             }
         });
 

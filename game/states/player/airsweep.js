@@ -7,7 +7,9 @@ define('game/states/player/airsweep', [
     'game/modules/state',
 
     'game/entities/attack',
-    'game/entities/effect'
+    'game/entities/effect',
+
+    'game/managers/camera'
 ], function (
     Core,
     KeyCodes,
@@ -17,7 +19,9 @@ define('game/states/player/airsweep', [
     State,
 
     Attack,
-    Effect
+    Effect,
+
+    Camera
 ) {
     "use strict";
     return new State({
@@ -48,6 +52,7 @@ define('game/states/player/airsweep', [
                         let enemyPos = enemy.getComponent('transform').position;
                         data.physics.vy = -3.5;
                         Core.add(new Effect('impact_pop', { x: enemyPos.x, y: enemyPos.y - 4 }));
+                        Camera.shake(5);
                     }
                 }));
 

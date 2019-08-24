@@ -29,6 +29,7 @@ define('game/states/player/dash', [
         update: function (data) {
             data.physics.vx += data.transform.scale.x * 0.5;
             data.physics.vx *= 0.9;
+            data.physics.vy *= 0.9;
         },
         stop: function (data) {
             data.entity.off('collisionX', this.onHitWall);
