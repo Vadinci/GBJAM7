@@ -24,7 +24,7 @@ require([
 ) {
     "use strict";
 
-    const IS_DEV = false;
+    const IS_DEV = true;
 
     let _initControls = function () {
         Core.input.bindKeys('up', KeyCodes.UP);
@@ -117,6 +117,7 @@ require([
                 _initControls();
                 _addFilteredCanvas();
                 ScreenManager.showTitleScreen();
+                // ScreenManager.showCreditsScreen();
             }, { once: true });
         });
     });

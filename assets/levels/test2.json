@@ -106,7 +106,7 @@
                  "name":"exit:test3",
                  "properties":
                     {
-                     "map":"test3",
+                     "map":"finishGame",
                      "spawnPoint":"left"
                     },
                  "propertytypes":

@@ -11,8 +11,17 @@ define('game/managers/navigation', [
     let _currentLevel;
     let _currentSpawnKey = 'default';
 
+    let Screen;
+
+    require(['game/managers/screen'], K => Screen = K);
+
 
     let warpTo = function (levelKey, spawnKey) {
+        if (levelKey === 'finishGame'){
+            Screen.showCreditsScreen();
+            return;
+        }
+
         // console.log(`warping to ${levelKey}:${spawnKey}`);
         if (_currentLevel) {
             _currentLevel.clear();
@@ -29,7 +38,8 @@ define('game/managers/navigation', [
     };
 
     let manager = {
-        warpTo: warpTo
+        warpTo: warpTo,
+        getCurrentLevel : getCurrentLevel
     };
     return manager;
 

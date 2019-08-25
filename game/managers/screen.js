@@ -5,6 +5,7 @@ define('game/managers/screen', [
     'game/utils',
 
     'game/entities/screens/title',
+    'game/entities/screens/credits',
 
     'game/managers/collision',
     'game/managers/camera',
@@ -16,6 +17,7 @@ define('game/managers/screen', [
     Utils,
 
     TitleScreen,
+    CreditsScreen,
 
     CollisionManager,
     Camera,
@@ -55,6 +57,33 @@ define('game/managers/screen', [
         }
     };
 
+    let showCreditsScreen = function () {
+        _doStopCurrentScreen();
+
+        let creditsScreen = new CreditsScreen({
+            onStart: function () {
+                startGame();
+            }
+        });
+        Core.add(creditsScreen);
+
+        /*
+        let titleMusic = Core.assets.getSound('music/title').play(true);
+        let tryMusic = function () {
+            if (!titleMusic || titleMusic.isPlaying) return;
+            titleMusic.play();
+            setTimeout(tryMusic, 25);
+        };
+        tryMusic();
+        */
+
+        _stopCurrentScreen = function () {
+            Core.remove(creditsScreen);
+            // titleMusic.stop();
+            // titleMusic = null;
+        }
+    };
+
     let startGame = function () {
         _doStopCurrentScreen();
 
@@ -85,6 +114,7 @@ define('game/managers/screen', [
 
     var self = {
         showTitleScreen: showTitleScreen,
+        showCreditsScreen: showCreditsScreen,
         startGame: startGame
     };
     return self;
