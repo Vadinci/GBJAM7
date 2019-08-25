@@ -96,6 +96,8 @@ define('game/entities/enemies/bird', [
             bird.removeComponent('enemy');
             physics.vx = 0;
 
+            Core.assets.getSound('kill_enemy').play();
+
             sprite.setAnimation('die');
             animDie.on('finish', () => {
                 Core.remove(bird);

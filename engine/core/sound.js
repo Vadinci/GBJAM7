@@ -73,7 +73,7 @@ define('engine/core/sound', [
 
         var instance = sound.cloneNode();
         instance.volume = (volume !== undefined) ? volume : 1;
-        instance.looping = looping || false;
+        instance.looping = instance.loop = looping || false;
 
         var soundInstance = new SoundInstance(instance);
         soundInstance.play();
@@ -114,7 +114,7 @@ define('engine/core/sound', [
 
     Object.defineProperty(SoundInstance, "looping", {
         get: function () { return this.instance.looping; },
-        set: function (val) { this.instance.looping = val; }
+        set: function (val) { this.instance.looping = this.instance.loop = val; }
     });
 
     Object.defineProperty(SoundInstance, "volume", {

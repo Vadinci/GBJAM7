@@ -37,6 +37,8 @@ define('game/states/player/stab', [
                 let a = data.transform.fromLocalPoint(12, -5);
                 let b = data.transform.fromLocalPoint(30, -1);
 
+                Core.assets.getSound('attack').play();
+
                 Core.add(new Attack({
                     a: a,
                     b: b,

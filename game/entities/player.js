@@ -88,6 +88,7 @@ define('game/entities/player', [
 
         player.on('collisionStart', function (data) {
             if (data.otherCollider.tags & G.CollisionTags.HARM) {
+                Core.assets.getSound('damage').play();
                 controller.hit();
             }
         });

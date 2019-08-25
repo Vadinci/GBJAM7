@@ -132,16 +132,20 @@ define('game/entities/enemies/shieldgoblin', [
                 if (data.otherEntity.name === 'dashAttack') {
                     _stunTimer = 120;
                     sprite.setAnimation('stun');
-                    physics.vy = -1.5;
-                    physics.vx = -transform.scale.x * 1.5;
+                    physics.vy = -1.8;
+                    physics.vx = -transform.scale.x * 1.8;
                 } else {
                     sprite.setAnimation('guard');
                     _stationaryTimer += 50;
+                    Core.assets.getSound('hit_shield').play();
+
                 }
                 player.getComponent('playerController').hit();
             } else {
                 shieldGoblin.removeComponent('enemy');
                 physics.vx = 0;
+
+                Core.assets.getSound('kill_enemy').play();
 
                 sprite.setAnimation('die');
                 animDie.on('finish', () => {

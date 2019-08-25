@@ -29,6 +29,7 @@ define('game/states/player/airsweep', [
         start: function (data) {
             data.sprite.setAnimation('airSweep');
             this.timer = 9;
+            Core.assets.getSound('attack').play();
         },
         update: function (data) {
             this.timer--;
@@ -53,6 +54,7 @@ define('game/states/player/airsweep', [
                         data.physics.vy = -3.5;
                         Core.add(new Effect('impact_pop', { x: enemyPos.x, y: enemyPos.y - 4 }));
                         Camera.shake(5);
+                        Core.assets.getSound('spear_jump').play();
                     }
                 }));
 

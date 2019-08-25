@@ -88,6 +88,8 @@ define('game/entities/enemies/slime', [
             slime.removeComponent('ledgeTurner');
             physics.vx = 0;
 
+            Core.assets.getSound('kill_enemy').play();
+
             sprite.setAnimation('die');
             animDie.on('finish', () => {
                 Core.remove(slime);

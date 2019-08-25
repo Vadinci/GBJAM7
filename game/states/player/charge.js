@@ -28,6 +28,7 @@ define('game/states/player/charge', [
 
             if (this.timer === 30) {
                 data.sprite.setAnimation('charged');
+                Core.assets.getSound('ready_attack').play();
             };
 
             if (!this.isHolding && this.timer > 30) {

@@ -5,17 +5,32 @@ textures:
   tiles: textures/tiles.png
   dust: textures/dust.png
   impact_pop: textures/impact_pop.png
-
+  #enemies
   enemy_slime: textures/enemy_slime.png
   enemy_bird: textures/enemy_bird.png
   enemy_sword: textures/enemy_sword.png
   enemy_shield: textures/enemy_shield.png
+  #title screen
+  title_screen: textures/title_screen.png
+  logo: textures/logo.png
+  start_button: textures/start_button.png
 
 sounds:
   #sfx
+  attack: sfx/attack.wav
+  collect: sfx/collect.wav
+  damage: sfx/damage.wav
+  dash_hit: sfx/dash_hit.wav
+  dash: sfx/dash.wav
+  hit_shield: sfx/hit_shield.wav
   jump: sfx/jump.wav
+  kill_enemy: sfx/kill_enemy.wav
+  ready_attack: sfx/ready_attack.wav
+  spear_jump: sfx/spear_jump.wav
+  start_game: sfx/start_game.wav
   #music
   music/ingame : music/ingame.mp3
+  music/title : music/title.mp3
 
 jsons:
   #levels

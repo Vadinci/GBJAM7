@@ -7,9 +7,7 @@ require([
     'engine/utils/keycodes',
     'engine/core/entity',
 
-    'game/managers/camera',
-    'game/managers/collision',
-    'game/managers/navigation'
+    'game/managers/screen'
 ], function (
     Core,
 
@@ -19,9 +17,7 @@ require([
     KeyCodes,
     Entity,
 
-    Camera,
-    CollisionManager,
-    Navigation
+    ScreenManager
 ) {
     "use strict";
 
@@ -57,16 +53,6 @@ require([
             GameCanvas.setPalette(palettes[pIdx]);
         });
 
-        Core.input.on('keyDown-S', () => {
-            Camera.shake(10);
-        });
-        Core.input.on('keyDown-D', () => {
-            Camera.shake(5);
-        });
-
-        CollisionManager.enable();
-        Camera.enable();
-
         {
             let isRecording = false;
             Core.input.on('keyDown-R', () => {
@@ -80,19 +66,9 @@ require([
             });
         }
 
-        Navigation.warpTo('test', 'default');
-
         canvas.getCanvasElement().style.width = '320px';
         canvas.getCanvasElement().style.height = '288px';
         document.body.append(canvas.getCanvasElement());
-
-        let instance = Core.assets.getSound('music/ingame').play(true);
-        let tryMusic = function () {
-            if (instance.isPlaying) return;
-            instance.play();
-            setTimeout(tryMusic, 25);
-        };
-        tryMusic();
     };
 
     Core.init({
@@ -133,30 +109,9 @@ require([
             Core.assets.on('loadingComplete', function () {
                 _initControls();
                 _addFilteredCanvas();
+                ScreenManager.showTitleScreen();
             }, { once: true });
         });
-        /*
-        Core.assets.loadTexture('assets/player.png', 'player');
-        Core.assets.loadTexture('assets/tiles.png', 'tiles');
-        Core.assets.loadTexture('assets/dust.png', 'dust');
-        Core.assets.loadTexture('assets/impact_pop.png', 'impact_pop');
-        Core.assets.loadTexture('assets/enemy_slime.png', 'enemy_slime');
-        Core.assets.loadTexture('assets/enemy_bird.png', 'enemy_bird');
-
-        Core.assets.loadJson('assets/levels/test.json', 'levels/test');
-        Core.assets.loadJson('assets/levels/test2.json', 'levels/test2');
-        Core.assets.loadJson('assets/levels/test3.json', 'levels/test3');
-
-        Core.assets.loadYaml('assets/effects.yaml', 'effects');
-
-        Core.assets.loadSound('assets/sfx/jump.wav', 'jump');
-
-        //Core.assets.loadYaml('assets/entities/onewayplatform.yaml', 'entities/onewayplatform');
-        Core.assets.on('loadingComplete', function () {
-            _initControls();
-            _addFilteredCanvas();
-        }, { once: true });
-        */
     });
 
 });

@@ -30,14 +30,17 @@ define('game/states/player/dash', [
             data.sprite.setAnimation('dash');
             data.entity.on('collisionX', this.onHitWall, { context: this });
 
+            Core.assets.getSound('dash').play();
+
             this.attack = new Attack({
                 a: { x: 12, y: -5 },
                 b: { x: 30, y: -1 },
                 tags: [G.CollisionTags.PLAYER_ATTACK],
                 onHit: function (col) {
                     Camera.shake(5);
+                    Core.assets.getSound('dash_hit').play();
                 },
-                lifeTime : -1
+                lifeTime: -1
             });
             this.attack.name = 'dashAttack';
             this.attack.getComponent('transform').parent = data.transform;
