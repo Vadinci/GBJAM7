@@ -12,16 +12,12 @@ define('game/components/sprite', [
         };
 
         let addAnimation = function (key, animation) {
-            if (_hasAnimation(key)) {
-                console.warn('animation with key "' + key + '" was already defined');
-                return;
-            };
+            if (_hasAnimation(key)) return;
             _animations[key] = animation;
         };
 
         let _hasAnimation = function (key) {
             if (!_animations[key]) {
-                console.warn('animation with key "' + key + '" was not defined');
                 return false;
             }
             return true;
@@ -67,13 +63,13 @@ define('game/components/sprite', [
         };
 
         let self = {
-            name : 'sprite',
+            name: 'sprite',
 
-            addAnimation : addAnimation,
-            setAnimation : setAnimation,
-            getAnimation : getAnimation,
-            getCurrentAnimation : getCurrentAnimation,
-            removeAnimation : removeAnimation,
+            addAnimation: addAnimation,
+            setAnimation: setAnimation,
+            getAnimation: getAnimation,
+            getCurrentAnimation: getCurrentAnimation,
+            removeAnimation: removeAnimation,
 
             update: update,
             draw: draw

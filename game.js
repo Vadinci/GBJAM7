@@ -1,3 +1,6 @@
+/*
+    GAME START
+ */
 require([
     'engine/core',
 
@@ -20,6 +23,8 @@ require([
     ScreenManager
 ) {
     "use strict";
+
+    const IS_DEV = false;
 
     let _initControls = function () {
         Core.input.bindKeys('up', KeyCodes.UP);
@@ -53,6 +58,8 @@ require([
             GameCanvas.setPalette(palettes[pIdx]);
         });
 
+        if (!IS_DEV) return;
+
         {
             let isRecording = false;
             Core.input.on('keyDown-R', () => {
@@ -79,7 +86,7 @@ require([
             }
         }
     }, function () {
-        Core.engine.setDebug(true);
+        Core.engine.setDebug(IS_DEV);
         Core.assets.loadYaml('./assets.yaml', null, function (data) {
             let baseFolder = data.baseFolder;
 

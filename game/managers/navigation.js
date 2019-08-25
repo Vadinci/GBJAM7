@@ -13,7 +13,7 @@ define('game/managers/navigation', [
 
 
     let warpTo = function (levelKey, spawnKey) {
-        console.log(`warping to ${levelKey}:${spawnKey}`);
+        // console.log(`warping to ${levelKey}:${spawnKey}`);
         if (_currentLevel) {
             _currentLevel.clear();
         }

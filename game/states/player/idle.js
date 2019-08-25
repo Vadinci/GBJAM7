@@ -23,7 +23,6 @@ define('game/states/player/idle', [
             data.handleLeftRight();
             data.handleJump();
             if (Math.abs(data.physics.vy) > 0.01) {
-            	console.log(data.physics.vy);
                 data.stateMachine.setState('jump');
             } else if (Core.input.keyPressed('attack')) {
                 data.stateMachine.setState('charge');

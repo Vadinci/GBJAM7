@@ -146,7 +146,7 @@ define('game/gamecanvas', [
             return shader;
         }
 
-        console.log(gl.getShaderInfoLog(shader));
+        console.error(gl.getShaderInfoLog(shader));
         gl.deleteShader(shader);
     };
 
@@ -160,7 +160,7 @@ define('game/gamecanvas', [
             return program;
         }
 
-        console.log(gl.getProgramInfoLog(program));
+        console.error(gl.getProgramInfoLog(program));
         gl.deleteProgram(program);
     };
 
@@ -169,7 +169,7 @@ define('game/gamecanvas', [
             paletteCanvas = new Canvas({
                 size: { x: 64, y: 16 }
             });
-            document.body.append(paletteCanvas.getCanvasElement());
+            //document.body.append(paletteCanvas.getCanvasElement());
         }
         for (let ii = 0; ii < 4; ii++) {
             let col = (colors[ii] || "#f0f");

@@ -1,0 +1,27 @@
+{
+  "name": "gbjam7",
+  "version": "0.0.1",
+  "description": "### Engine * ECS loop * Post-effect Ramp & 4color Palette shader",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vadinci/GBJAM7.git"
+  },
+  "author": "Vadinci",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Vadinci/GBJAM7/issues"
+  },
+  "homepage": "https://github.com/Vadinci/GBJAM7#readme",
+  "dependencies": {
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-uglify-es": "^1.0.4"
+  }
+}
