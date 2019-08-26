@@ -125,7 +125,7 @@ define('engine/core/entity', [
                 console.warn('component ' + component.name + ' was not added to entity ' + self.name);
                 return;
             }
-            component.die();
+            component.die && component.die();
             _components.splice(idx, 1);
 
             for (let key in _componentCalls) {

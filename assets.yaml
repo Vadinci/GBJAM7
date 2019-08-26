@@ -41,5 +41,11 @@ jsons:
   levels/test2: levels/test2
   levels/test3: levels/test3
 
+  levels/intro: levels/intro
+  levels/firstjump: levels/firstjump
+  levels/firstslime: levels/firstslime
+  levels/slimes: levels/slimes
+
+
 yamls:
   effects: effects.yaml

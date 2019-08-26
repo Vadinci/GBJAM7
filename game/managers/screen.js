@@ -87,7 +87,7 @@ define('game/managers/screen', [
     let startGame = function () {
         _doStopCurrentScreen();
 
-        let firstMap = 'test';
+        let firstMap = 'firstslime';
 
         CollisionManager.enable();
         Camera.enable();
